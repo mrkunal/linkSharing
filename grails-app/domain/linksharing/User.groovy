@@ -18,6 +18,7 @@ class User {
                   resource:Resource,resourceRating:ResourceRating]
   static constraints = {
     email(email:true,blank:false,unique:true,nullable:false)
+    photo(nullable:true)
     password(password:true,nullable:false,blank:false)
     passwordConfirm(password:true)
     passwordConfirm validator:{val,obj->

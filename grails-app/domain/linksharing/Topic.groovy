@@ -13,10 +13,10 @@ class Topic {
 
     static constraints = {
         visibility(blank:false,nullable:false)
-        user(unique:true)
+        //user(unique:true)
     }
 
 
     String toString()
-    { return user+"-"+name }
+    { return name }
 }

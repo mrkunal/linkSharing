@@ -1,7 +1,7 @@
 package linksharing
 
 class Resource {
-    String title
+   // String title
     String description
     Date dateCreated
     Date lastUpdated
@@ -13,7 +13,7 @@ class Resource {
 
     static constraints = {
        description(size:1..1024)
-        title(unique:'topic')
+     //   title(unique:'topic')
         createdBy(nullable:false,blank:false)
     }
 }

@@ -1,7 +1,7 @@
 package linksharing
 
 class ReadingItem {
-Boolean isRead
+Boolean isRead=false
 
     static belongsTo=[resource:Resource,user:User]
     static constraints = {

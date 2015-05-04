@@ -4,7 +4,9 @@ class BootStrap {
     def init = { servletContext ->
    createUsers()
    createTopics()
-}
+        createResources()
+createReadingItems()
+    }
     def destroy = {
     }
    
@@ -22,7 +24,7 @@ new User(firstName:"amit",email:"amitgupta@gmail.com",userName:"amit8",password:
          5.times {
              Topic topic = new Topic(user:user,name: "Topic ${it + 1}", visibility:"Public").save(failOnError: true)
 
-//          new Subscription(topic:Topic,seriousness:"Serious",user:user).save(failOnError: true)
+          new Subscription(topic:topic,seriousness:"Serious",user:user).save(failOnError: true)
          }
      }
  }
@@ -31,9 +33,36 @@ new User(firstName:"amit",email:"amitgupta@gmail.com",userName:"amit8",password:
 
 
 void createResources()
-{}
+{
+List users =User.list()
+    users.each {user ->
+
+        def topics=Topic.findAllByUser(user)
+        topics.each { topic->
+            5.times
+                    {
+                        new LinkResource(createdBy:user,description:"Resource ${it} - ${topic} - ${user}"
+                                ,topic:topic,url:"http://www.google.com").save(failOnError:true)
+
+                        new DocumentResource(createdBy:user,description:"Resource ${it}- ${topic} - ${user}"
+                                ,topic:topic,filePath:"C:\\users\\Desktop").save(failOnError:true)
+                    }
+
+        }
+    }
+
+}
 void createReadingItems()
-{}
+{
+    int size=Resource.list().size();
+    User.list().each { user ->
+   3.times {
+       Random random = new Random()
+
+       new ReadingItem(resource: Resource.get(Math.abs(random.nextInt() % size)), isRead: true, user: user).save(failOnError: true)
+   }
+   }
+    }
 void createRatings()
 {}
 void subscribeTopic()

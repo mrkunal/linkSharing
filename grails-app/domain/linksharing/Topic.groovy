@@ -6,10 +6,9 @@ class Topic {
     Date lastUpdated
    Visibility visibility
 
-    enum Visibility {Public,Private}
 
     static belongsTo=[user:User]
-    static hasMany=[resource:Resource,subscription:Subscription]
+    static hasMany=[resources:Resource,subscriptions:Subscription]
 
     static constraints = {
         visibility(blank:false,nullable:false)

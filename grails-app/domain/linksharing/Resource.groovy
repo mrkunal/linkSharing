@@ -8,7 +8,7 @@ class Resource {
     User createdBy
     static belongsTo=[topic:Topic]
 
-    static hasMany=[readingItems:ReadingItem,resourceRatiing:ResourceRating]
+    static hasMany=[readingItems:ReadingItem,resourceRatiings:ResourceRating]
 
 
     static constraints = {

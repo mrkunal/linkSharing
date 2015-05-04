@@ -7,9 +7,7 @@ class Subscription {
     static belongsTo=[user:User,topic:Topic]
 
 
-    enum Seriousness {
-        Serious, verySerious, Casual
-    }
+
 
 
     static constraints = {

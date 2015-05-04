@@ -5,7 +5,6 @@ class User {
   String email
   String userName
   String password
-  String passwordConfirm
   String firstName
   String lastName
   byte[] photo
@@ -14,17 +13,24 @@ class User {
   Date dateCreated
   Date lastUpdated
 
-  static hasMany=[topic:Topic,subscription:Subscription,readingItem:ReadingItem,
-                  resource:Resource,resourceRating:ResourceRating]
+
+
+  static transient passwordConfirm
+
+
+  static hasMany=[topics:Topic,subscriptions:Subscription,readingItems:ReadingItem,
+                  resources:Resource,resourceRatings:ResourceRating]
   static constraints = {
     email(email:true,blank:false,unique:true,nullable:false)
     photo(nullable:true)
     password(password:true,nullable:false,blank:false)
-    passwordConfirm(password:true)
-    passwordConfirm validator:{val,obj->
+
+   /*   Can be used with passwordConfirm
+
+     passwordConfirm validator:{val,obj->
       obj.password==val
     }
-
+         */
   }
 
 

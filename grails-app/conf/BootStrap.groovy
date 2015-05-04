@@ -12,9 +12,9 @@ createReadingItems()
    
  void createUsers()
   {
- new User(firstName:"kunal",email:"kunalkumar284@gmail.com",userName:"kuku8",password:"kunal123",passwordConfirm:"kunal123",lastName:"kumar").save(failOnError:true)
+ new User(firstName:"kunal",email:"kunalkumar284@gmail.com",userName:"kuku8",password:"kunal123",lastName:"kumar").save(failOnError:true)
 
-new User(firstName:"amit",email:"amitgupta@gmail.com",userName:"amit8",password:"amit456",passwordConfirm:"amit456",lastName:"gupta").save(failOnError:true)
+new User(firstName:"amit",email:"amitgupta@gmail.com",userName:"amit8",password:"amit456",lastName:"gupta").save(failOnError:true)
 
   }
 
@@ -22,9 +22,9 @@ new User(firstName:"amit",email:"amitgupta@gmail.com",userName:"amit8",password:
      List users = User.list()
      users.each { user ->
          5.times {
-             Topic topic = new Topic(user:user,name: "Topic ${it + 1}", visibility:"Public").save(failOnError: true)
+             Topic topic = new Topic(user:user,name: "Topic ${it + 1}", visibility:Visibility.PUBLIC).save(failOnError: true)
 
-          new Subscription(topic:topic,seriousness:"Serious",user:user).save(failOnError: true)
+          new Subscription(topic:topic,seriousness:Seriousness.SERIOUS,user:user).save(failOnError: true)
          }
      }
  }
@@ -69,3 +69,4 @@ void subscribeTopic()
 {}
 
 }
+

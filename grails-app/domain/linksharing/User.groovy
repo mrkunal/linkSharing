@@ -5,8 +5,10 @@ class User {
   String email
   String userName
   String password
+  String confirmPassword 
   String firstName
   String lastName
+ 
   byte[] photo
   Boolean admin=false
   Boolean active=false
@@ -15,7 +17,7 @@ class User {
 
 
 
-  static transient passwordConfirm
+//  static transients =['confirmPassword']
 
 
   static hasMany=[topics:Topic,subscriptions:Subscription,readingItems:ReadingItem,
@@ -23,14 +25,12 @@ class User {
   static constraints = {
     email(email:true,blank:false,unique:true,nullable:false)
     photo(nullable:true)
-    password(password:true,nullable:false,blank:false)
+  confirmPassword(nullable:false,password:true)
+password(minSize: 6, maxSize: 16, nullable: false,password:true, blank: false, validator: {value, object ->
+            if (!object.id && value != object.confirmPassword)
+                return "user.password.mismatch"
+        })
 
-   /*   Can be used with passwordConfirm
-
-     passwordConfirm validator:{val,obj->
-      obj.password==val
-    }
-         */
   }
 
 

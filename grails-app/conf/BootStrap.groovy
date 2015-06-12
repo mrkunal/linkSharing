@@ -12,9 +12,9 @@ createReadingItems()
    
  void createUsers()
   {
- new User(firstName:"kunal",email:"kunalkumar284@gmail.com",userName:"kuku8",password:"kunal123",lastName:"kumar").save(failOnError:true)
+ new User(firstName:"kunal",email:"kunalkumar284@gmail.com",userName:"kuku8",password:"kunal123",confirmPassword:"kunal123",lastName:"kumar").save(failOnError:true)
 
-new User(firstName:"amit",email:"amitgupta@gmail.com",userName:"amit8",password:"amit456",lastName:"gupta").save(failOnError:true)
+new User(firstName:"amit",email:"amitgupta@gmail.com",userName:"amit8",confirmPassword:"amit456",password:"amit456",lastName:"gupta").save(failOnError:true)
 
   }
 

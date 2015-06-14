@@ -15,10 +15,5 @@ class Subscription {
         seriousness(blank:false,nullable:false)
     }
 
-String toString()
-{
-    return user+"-S-"+topic
-
-}
 
 }

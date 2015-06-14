@@ -10,10 +10,12 @@ class Resource {
 
     static hasMany=[readingItems:ReadingItem,resourceRatiings:ResourceRating]
 
-
+    static mapping = {
+        tablePerHierarchy false
+        description type: 'text'
+    }
     static constraints = {
        description(size:1..1024)
-     //   title(unique:'topic')
         createdBy(nullable:false,blank:false)
     }
 }

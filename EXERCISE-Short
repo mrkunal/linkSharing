@@ -1,0 +1,101 @@
+##################### Domain Classes ################################
+Domain Exercises
+
+1. Create domain model for linksharing
+2. Add following Constraints
+   	- Email of should be a email type cannot be blank and null, it can never be repeated
+- Each user can subscribe a topic only one time
+- The name of the topic will be unique per user, e.g.; User X created topic by name A  
+   cannot create a new topic with the same name but User Y can create a topic with the  
+   name A.
+     	- Title of a resource can occur only one time in within a topic
+- Summary of a resource cannot be greater than 1024 characters
+- FileName and contentType of a document resource can never be blank or null
+- Url in linkresource must be a valid url
+
+3. Create custom validator for validating password with confirm password 
+4. Change summary field in Resource to text type 
+5. Change mappings in resource domain to have different tables for children tables
+
+Optional :
+
+1) Create domains as below :
+class Group{
+String record
+Integer order
+String details
+String name
+static hasMany=[addresses:Address]
+}
+
+class Address{String city}
+
+class StudentGroup extends Group{}
+class ProfessorGroup extends Group{}
+
+a) List down the issues you faced and the solutions.
+b) Try storing a string value having more than 1000 chars for details. Will your solution work for 3000 chars without any changes?
+c) Why this version field in the table created for Group domain. We don't want this.
+d) I want to track insertions and updations datetime for every Group instance.
+e) Seems that Group.list() returns records sorted by some numeric field. End user wants this to be sorted by name by default.
+f) Use loggingSql=true in Datasource.groovy and explain the impact of GORM's load method.
+##########################################################################
+
+#####################Gorm -1 #############################################
+Exercise
+
+- Populate data in the bootstrap
+- Create two users, add five topics to each user and subscribe them to the topic created
+- User will be automatically subscribed to the topic created by him.
+- For each topic, create 5 link resources and 5 document resources.
+- Randomly mark 3 items as read for each user
+- Divide your bootstrap in separate methods as follows
+- createUsers
+- createTopics
+- createResources
+- createReadingItems
+- createRatings
+- subscribeTopic
+##########################################################################
+
+#######################Gorm  -2 ##########################################
+GORM2 Exercises  
+ 
+ 
+­ Subscription in user dashboard will show the top 5 subscription on the basis of recently 
+added resource in it. (Page 4 of the document) 
+­ Use criteria to show the Inbox to the user. 
+­ User criteria to show the subscribed topics of the user and count of post and subscription of 
+the topic ( Page 7 of the Document) 
+
+##########################################################################
+#####################   ConTrollers ######################################
+Exercises
+- Create a LoginController that will handle all login related functionality
+- Create an index action for a login and registration page with basic HTML
+mentioned in the document.
+- Create an action loginHandler in the user controller, which sets session user
+and redirect the user to HomeController dashboard action after login.
+- User will be redirected to HomeController index action on the base url ( / ) of
+the application. If User is not logged it will be redirected LoginController index
+action else to HomeController dashboard action which will just render username
+of logged in user
+- Create empty controllers for each domain classes like TopicController,
+LinkResourceController, DocumentResourceController etc.
+
+###########################################################################
+
+###################### Views And TagLibs ##################################
+
+Excercises For View & TagLib
+
+- create Layout of the application shown in the document 
+- Show "Recent share" and "Top post" on the home page (Page 3 of the document) 
+- Create template to show the details of the post and use them in "Top post" "Recent share" 
+- Create dashboard and show the inbox of the user. 
+- Implement Topic, Link Resource and Document Resource create and save actions in their respective controllers. 
+- Whenever a resource is added it will be added to reading items of the subscribed user of the topic
+
+#############################################################################
+
+

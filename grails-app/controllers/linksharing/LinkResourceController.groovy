@@ -3,5 +3,5 @@ package linksharing
 class LinkResourceController {
 
 
-    def scaffold=true
+    static scaffold=true
 }

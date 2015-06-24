@@ -70,6 +70,7 @@ the topic ( Page 7 of the Document)
 
 ##########################################################################
 #####################   ConTrollers ######################################
+
 Exercises
 - Create a LoginController that will handle all login related functionality
 - Create an index action for a login and registration page with basic HTML
@@ -97,5 +98,52 @@ Excercises For View & TagLib
 - Whenever a resource is added it will be added to reading items of the subscribed user of the topic
 
 #############################################################################
+
+##################### Controller - 2 ########################################
+Grails Controllers - II
+
+- Implement register action in user controller	
+- Use command object to validate confirmpassword with password	
+- Implement show Page of the User ( Page 11 of the Document) and give links to user show page from user name and image click.	
+- Create page to send email invite 
+- Create action just to validate the email address sent from the page and binds the topic object.
+
+#############################################################################
+
+###################### Controllet -3#########################################
+Grails Controllers - III
+
+- Create application filter to log all the request parameters
+- Create a filter to block access to all controller actions except 'login handler' login, register and register handler for not logged in user
+- Take User to login page with a message Login to the System if the user is not logged in
+- Create list action in user controller which will be shown only to admin (Page 12 of the Document)
+- Create interceptor to give access only to admin for user list
+
+##############################################################################
+
+########################## Services ##########################################
+
+- Move all the bootstrapping code to BootstrapService
+- Move the code for Topic subscription to a transactional service
+- Save some domain objects in a service method and deliberately throw an exception to understand transaction rollback analogy
+- Refactor your code and move as much transaction related work to the service layer from controllers
+- Move the code for Topic creation and subscribing the user automatically to a transactional service
+- Log all the email ids entered in "Send Invite" functionality using a non transactional service
+- Create SearchController and SearchService to implement a search feature which will show all the posts containing the search text.
+
+#################################################################################
+
+##########################Ajax & Advanced JQuery#################################
+
+- Ajaxify mark as read.
+- Show ajxified pagination on user dashboard subscription, inbox, posts of the subscription, subscriptions and search 
+- Unique email address check using remote validation
+- Dialogs for adding sending emain invitation, topic, document resource and link resource
+- Ajax search on topic name ( Page 7 of the Document)
+- Add dropdown on post to set rating and save it using ajax. (You can implement some plugin as well to save rating, Page 9 of the document)
+- All the Ajax save should have Green message alert on success and Red message alert in failure, it should be shown for 3 seconds and closes automatically
+
+
+####################################################################################
 
 

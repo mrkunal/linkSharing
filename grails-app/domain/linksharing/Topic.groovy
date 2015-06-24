@@ -11,6 +11,7 @@ class Topic {
     static hasMany=[resources:Resource,subscriptions:Subscription]
 
     static constraints = {
+        name(unique: "user")
         visibility(blank:false,nullable:false)
 
     }

@@ -18,7 +18,12 @@
 <div style="background-color: gainsboro;border-width: thick;border-color:black" >
 <h1 align="center">   Link Sharing Application</h1>
 
-<h4 align="right"><form class="form-search">
+<h4 align="right">
+
+    <g:link action="create" controller="linkResource"> Share link</g:link>
+    <g:link action="create" controller="documentResource"> Share Document</g:link>
+    <g:link action="create" controller="topic">Create Topic</g:link>
+    <form class="form-search">
     <input type="text" class="input-medium search-query">
     <button type="submit" class="btn">Search</button>
 </form>  Hi ,${session['userName']}

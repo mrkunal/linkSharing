@@ -11,7 +11,7 @@ class User {
   byte[] photo
     String photoName
   Boolean admin=false
-  Boolean active=false
+  Boolean active=true
   Date dateCreated
   Date lastUpdated
 
@@ -30,6 +30,7 @@ class User {
        email(email:true,blank:false,unique:true,nullable:false)
        photo(nullable:true,maxSize:  1024*1024*4)
         photoName(nullable: true)
+       userName(unique: true)
   }
 
 

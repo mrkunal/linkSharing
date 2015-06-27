@@ -3,9 +3,9 @@
 
 <g:each in="${toppost}" var="rs">
 
-    <gt:pic uid="${rs.user.id}"/>
+    <gt:pic uid="${rs.createdBy.id}"/>
 
-    <i>${rs.user.firstName} @${rs.user.userName}</i> <a href="www.google.com">${rs.topic.name}</a>
+    <i>${rs.createdBy.firstName} @${rs.createdBy.userName}</i> <a href="www.google.com">${rs.topic.name}</a>
     <br/>
     <br/>
     ${rs.description}

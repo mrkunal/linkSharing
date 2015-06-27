@@ -1,16 +1,16 @@
 package linksharing
-import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class LoginController {
-
+    def mailService
     def index() {
 
-
-        List<Resource> rlist=Resource.list([sort:'lastUpdated',order: "desc",max: 5])
+        //Only Public Topics Resource is to be visible in recent shares
+        List<Topic> top =Topic.findAllByVisibility("PUBLIC")
+        List<Resource> rlist=Resource.findAllByTopicInList(top,[sort:'lastUpdated',order: "desc",max: 5])
 
 
         List<Resource> toppost=ResourceRating.createCriteria().list {
-  projections{ property("resource")
+         projections{ property("resource")
              sum("score")}
 
             groupProperty("resource")
@@ -21,7 +21,7 @@ class LoginController {
     def loginHandler(){
    /*     User user = User.findByUserName(params.userName)
         if(user.password == params.password.toString().encodeAsMD5()){
- render "Verified User"
+  render "Verified User"
         }
         else {
 
@@ -44,6 +44,7 @@ class LoginController {
 
 
     }
+
     def register(UserCO userco)
     {
           User user=new User();
@@ -76,8 +77,47 @@ class LoginController {
     {
         List<Resource> rlist=Resource.list([sort:'lastUpdated',order: "desc",max: 5])
 
+
         [resources:rlist]
+
     }
+
+
+
+
+def forgot()
+{
+
+}
+ def query()
+{
+ String email=params['email']
+    User user=User.findByEmail(email)
+    if(user==null)
+    {   flash.message="Email ID Doesnt exist"
+        redirect(action: "forgot")}
+
+    else
+    {
+
+
+def password=new String()
+        Random r=new Random()
+        5.times{
+            password+=r.nextInt(100)
+        }
+
+
+        mailService.sendMail {
+            to "${email}"
+            subject "Password Reset"
+            body "Your New Password is :" + "${password}"
+        }
+        user.password=password
+        user.save(flush: true)
+        flash.message="password Sent"
+        redirect(action:"forgot")}
+     }
 
 }
 

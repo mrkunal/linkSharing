@@ -12,14 +12,13 @@
 
 
 </head>
-
 <body>
 
-<div style="border:solid thick " >
+<div>
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
-
+    <h3>Recent Shares</h3>
     <g:render template="recentShare" model="[resources: resources]"/>
 <div style="border: solid; border-color: lightgrey ;width:450px;float:right">
     <g:form url="[controller:'login',action:'loginHandler']">
@@ -86,7 +85,10 @@
 </div>
 
 <div style="margin-top: 27%">
-<g:render template="topPost" model="[toppost:toppost]"/>
+    <h3>Top Posts</h3>
+    %{--${toppost.description}--}%
+    %{--${toppost}--}%
+    %{--<g:render template="topPost" model="[toppost: toppost]"/>--}%
 </div>
 </div>
 

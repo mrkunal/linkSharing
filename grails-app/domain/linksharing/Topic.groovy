@@ -7,11 +7,11 @@ class Topic {
    Visibility visibility
 
 
-    static belongsTo=[user:User]
+    static belongsTo=[createdBy:User]
     static hasMany=[resources:Resource,subscriptions:Subscription]
 
     static constraints = {
-        name(unique: "user")
+        name(unique: "createdBy")
         visibility(blank:false,nullable:false)
 
     }

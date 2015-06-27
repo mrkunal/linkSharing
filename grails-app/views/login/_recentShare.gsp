@@ -1,4 +1,4 @@
-<h3>Recent Shares</h3>
+
 <div style="overflow:scroll;height:300px;width: 550px;border:solid;border-color:lightgrey;float:left" >
 
 <g:each in="${resources}" var="rs">
@@ -7,9 +7,10 @@
     <gt:pic uid="${rs.createdBy.id}"/>
 </div>
    <br/> <div style="float:left;padding-left: 5px;height:150px;width: 330px">
-     <i>${rs.createdBy.firstName} ${rs.createdBy.userName}</i>
+   <b>  <i>${rs.createdBy.firstName} @ ${rs.createdBy.userName}</i></b>
+<i> <gt:time time="${rs.lastUpdated}"/></i>
 
-    <a href="www.google.com" style="padding-left: 140px">${rs.topic.name}</a>
+    <a href="www.google.com" style="padding-left: 60px">${rs.topic.name}</a>
 
    <br/> ${rs.description}
 <br/>

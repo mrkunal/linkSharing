@@ -3,6 +3,9 @@
  */
 package linksharing
 
+import grails.validation.Validateable
+
+@Validateable
 class UserCO {
     String email
     String userName

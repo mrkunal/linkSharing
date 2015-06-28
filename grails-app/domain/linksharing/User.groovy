@@ -17,6 +17,9 @@ class User {
 
 
 
+
+
+
 /*
  def beforeInsert = {
     password = password.encodeAsMD5()

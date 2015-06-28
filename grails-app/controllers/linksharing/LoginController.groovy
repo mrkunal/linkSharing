@@ -2,6 +2,7 @@ package linksharing
 
 class LoginController {
     def mailService
+
     def index() {
 
         //Only Public Topics Resource is to be visible in recent shares
@@ -9,13 +10,29 @@ class LoginController {
         List<Resource> rlist=Resource.findAllByTopicInList(top,[sort:'lastUpdated',order: "desc",max: 5])
 
 
-        List<Resource> toppost=ResourceRating.createCriteria().list {
-         projections{ property("resource")
-             sum("score")}
+        List<Resource> Allresources=Resource.findAllByTopicInList(top)
+        List<Resource> topposts=ResourceRating.createCriteria().list([max:5]) {
+            projections{
+                groupProperty("resource")
+                sum("score",'sum')
 
-            groupProperty("resource")
+            }
+            order('sum','desc')
+            inList('resource',Allresources)
+
+        }*.getAt(0)
+
+
+     /*   List score                            // can be used to show ratings score.
+        List<Resource> topResource
+         topposts.each{toppost->
+             score<<toppost.last()
+            topResource <<toppost.first()
+         //   println t+"  "+ r
         }
-        [resources:rlist,toppost:toppost]
+         */
+
+        [resources:rlist,toppost:topposts]
 
     }
     def loginHandler(){

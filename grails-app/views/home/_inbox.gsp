@@ -1,4 +1,4 @@
-<%@ page import="linksharing.LinkResource" %>
+<%@ page import="linksharing.*" %>
 <div class="panel panel-default" style="width: 600px"  >
     <div class="panel-heading" align="left">
         <h3 class="panel-title">Inbox</h3>

@@ -93,6 +93,26 @@ def bootstrapService
     }
     void createRatings()
     {
+        List users =User.list()
+        int counter=0
+        users.each { User user ->
+
+            List<Subscription> sub = Subscription.findAllByUser(user)
+
+            List<Resource> res = Resource.findAllByTopicInList(sub.topic)
+
+            Random random = new Random()
+
+            new ResourceRating(resource: res.first(), score: random.nextInt(5)+1, user: user).save()
+            new ResourceRating(resource: res.last(), score: random.nextInt(5)+1, user: user).save()
+            new ResourceRating(resource: Resource.get(34), score: random.nextInt(5)+1, user: user).save()
+            new ResourceRating(resource: Resource.get(22), score: random.nextInt(5)+1, user: user).save()
+            new ResourceRating(resource: Resource.get(72), score: random.nextInt(5)+1, user: user).save()
+            new ResourceRating(resource: Resource.get(21), score: random.nextInt(5)+1, user: user).save()
+            new ResourceRating(resource: Resource.get(88), score: random.nextInt(5)+1, user: user).save()
+
+
+        }
 
     }
     void subscribeTopic()

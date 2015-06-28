@@ -9,12 +9,12 @@
 <html>
 <head>
     <title>Main Page</title>
-
+    <meta name="layout" content="dash_head">
 
 </head>
 <body>
 
-<div>
+<div class="container"  >
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
@@ -85,11 +85,10 @@
 </div>
 
 <div style="margin-top: 27%">
-    <h3>Top Posts</h3>
-    %{--${toppost.description}--}%
-    %{--${toppost}--}%
-    %{--<g:render template="topPost" model="[toppost: toppost]"/>--}%
+   <br/> <h2>Top Posts</h2>
+    <g:render template="recentShare" model="[resources: toppost]"/>
 </div>
+    &nbsp;
 </div>
 
 </body>

@@ -1,10 +1,24 @@
 package linksharing
 
+import grails.plugin.mail.MailService
+import org.apache.commons.validator.routines.EmailValidator
+
 class HomeController {
 User user
-    def index() {
+MailService mailService
+    def beforeInterceptor = {
         String userName= "${session["userName"]}"
         user=User.findByUserName(userName)
+
+    if(user==null)
+    {   flash.message="You Need to be logged in First"
+        redirect(controller: 'login',action: 'index')}
+    }
+    def index() {
+
+
+       // String userName= "${session["userName"]}"
+       // user=User.findByUserName(userName)
 
         if(user!=null)
         {
@@ -15,52 +29,83 @@ User user
 
 
  def dashboard()
-  {   String userName= "${session["userName"]}"
-      user=User.findByUserName(userName)
+  {   //String userName= "${session["userName"]}"
+      //user=User.findByUserName(userName)
       def inbox_data=inbox_data()
-
+      def trendingTopics=trending_topic()
 
       int subscription_total = Subscription.countByUser(user)
 
       int topic_total = Topic.countByCreatedBy(user)
 
-      [resources:inbox_data,user:user,subscription_total:subscription_total,topic_total:topic_total]
+      [resources:inbox_data,user:user,subscription_total:subscription_total,topic_total:topic_total,trendingTopics:trendingTopics,user:user]
   }
 
-/*
-def shareLink()
- {
-     String userName= "${session["userName"]}"
-     user=User.findByUserName(userName)
-
-     List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
-         projections { property("topic") }
-         eq('user', user)
-     }
-         [topics:top]
-
- }
-*/
-
-    /*def link_create()
+     def invitation()
     {
-        String userName= "${session["userName"]}"
-        user=User.findByUserName(userName)
+       def topics=Subscription.findAllByUser(user)
+        [subscribed: topics.topic]
+    }
 
-        LinkResource linkResource=new LinkResource()
-        linkResource.topic=Topic.findById(params['topic'])
-        linkResource.url=params['url']
-        linkResource.createdBy=user
-        linkResource.description=params['description']
-        if(!linkResource.validate()) {
-         flash.message="Error while Sharing"
-            redirect(controller: "home", action: "dashboard")
+    def invite() {
+        boolean valid=true
+        List<String> emails
+        emails = params['email'].toString().split(';')
+
+
+        EmailValidator emailValidator = EmailValidator.getInstance()
+
+        try{
+            emails.each { email ->
+
+                if (!emailValidator.isValid(email)) {
+                   valid=false
+                    throw new Exception()
+                }
+
+            }
         }
-        else {
-            linkResource.save(failOnError: true)
-            redirect(controller: "home", action: "dashboard")
+        catch(Exception e){
+            flash.message="Not a Valid Email Id Set..!please Check ie. 'emailid@domain.com;emailid2@domain.com'"
+             redirect (controller: 'home',action:'invitation' )
         }
-        }*/
+
+        if(valid) {
+            Topic topic = Topic.findById(params['topic'])
+            emails.each { email ->
+                mailService.sendMail {
+                    //  async true
+                    to email
+                    subject "Invitation"
+                    body """ Hi,
+                          You are invited by ${user.firstName}  to join this Topic ${topic.name}
+
+
+                          """
+                }
+
+            }
+            flash.message = "Invitations Successfully Sends."
+            redirect(controller: 'home',action: 'dashboard')
+          }
+    }
+
+    protected def trending_topic()
+    {
+        List<Topic> trendingTopics =Resource.createCriteria().list(max:5){
+        projections{
+            groupProperty ('topic')
+        }
+        count('topic','resCount')
+
+        'topic' {
+            eq('visibility',Visibility.PUBLIC)
+        }
+        order('resCount','desc')
+    }*.getAt(0)
+
+
+    }
 
     protected def inbox_data()
     {
@@ -95,8 +140,8 @@ def shareLink()
 
     def shareDocument()
     {
-        String userName= "${session["userName"]}"
-        user=User.findByUserName(userName)
+//        String userName= "${session["userName"]}"
+//        user=User.findByUserName(userName)
 
         List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
             projections { property("topic") }
@@ -119,14 +164,14 @@ def shareLink()
             response.setHeader("Content-disposition", "attachment;filename=\"${resource.fileName}\"")
             response.outputStream << file.bytes
         }
-        else render "Error!"
+        else render "File Not Found ...Error!"
 
     }
 
     def document_create()
     {
-        String userName= "${session["userName"]}"
-        user=User.findByUserName(userName)
+//        String userName= "${session["userName"]}"
+//        user=User.findByUserName(userName)
 
         def file = request.getFile('file')
         if(file.empty) {
@@ -153,6 +198,7 @@ def shareLink()
             documentResource.save(failOnError: true)
             redirect(controller: "home",action: "dashboard")
         }
+
 
     }
 

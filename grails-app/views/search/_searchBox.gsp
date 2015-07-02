@@ -11,8 +11,7 @@
                 <i> <gt:time time="${rs.lastUpdated}"/></i>
 
 
-                 &emsp; <span style="padding-left:68px;"></span>
-                <g:link controller="topic" action="show" params="[topicId:rs.topic.id]"> ${rs.topic.name}</g:link>
+                 &emsp; <span style="padding-left:68px;"></span>     <g:link> ${rs.topic.name}</g:link>
 
                 <br/> ${rs.description}
                 <br/>
@@ -33,7 +32,7 @@
                 <% }  %>
             &ensp;
 
-                <g:link controller="resource" action="viewPost" params="[resource:rs.id]">View Post</g:link>
+                <g:link controller="viewPost" action="showPost" params="[resource:rs]">View Post</g:link>
 
 
 

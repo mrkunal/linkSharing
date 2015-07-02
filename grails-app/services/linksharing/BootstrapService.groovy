@@ -18,17 +18,17 @@ def bootstrapService
     void createUsers()
     {   File file=new File("web-app/images/img3.jpg")
 
-        new User(firstName:"Kunal",email:"kunalkumar284@gmail.com",userName:"kunal",password:"kunal",lastName:"kumar",photoName:"image/jpg",photo:file.getBytes()).save(failOnError:true)
+        new User(firstName:"Kunal",email:"kunalkumar284@gmail.com",userName:"kunal",password:"kunal".encodeAsMD5(),lastName:"kumar",photoName:"image/jpg",photo:file.getBytes()).save(failOnError:true)
 
-        new User(firstName:"Steve",email:"stevemartin@gmail.com",userName:"steve",password:"steve",lastName:"martin").save(failOnError:true)
+        new User(firstName:"Steve",email:"stevemartin@gmail.com",userName:"steve",password:"steve".encodeAsMD5(),lastName:"martin").save(failOnError:true)
 
-        new User(firstName:"Admin",email:"linkadmin@gmail.com",userName:"admin",password:"admin",lastName:"linksharing",admin: true).save(failOnError:true)
+        new User(firstName:"Admin",email:"linkadmin@gmail.com",userName:"admin",password:"admin".encodeAsMD5(),lastName:"linksharing",admin: true).save(failOnError:true)
 
         File file1=new File("web-app/images/img1.png")
-         new User(firstName:"Robert",email:"robertpat@gmail.com",userName:"robert",password:"robert",lastName:"Pattinson",photoName:"image/png",photo:file1.getBytes()).save(failOnError:true)
+         new User(firstName:"Robert",email:"robertpat@gmail.com",userName:"robert",password:"robert".encodeAsMD5(),lastName:"Pattinson",photoName:"image/png",photo:file1.getBytes()).save(failOnError:true)
 
         File file2=new File("web-app/images/img2.png")
-         new User(firstName:"Katy",email:"katyperry@gmail.com",userName:"katy",password:"katy",lastName:"perry",photoName:"image/png",photo:file2.getBytes()).save(failOnError:true,flush: true)
+         new User(firstName:"Katy",email:"katyperry@gmail.com",userName:"katy",password:"katy".encodeAsMD5(),lastName:"perry",photoName:"image/png",photo:file2.getBytes()).save(failOnError:true,flush: true)
 
 
 
@@ -43,7 +43,7 @@ def bootstrapService
                 new Subscription(topic:topic,seriousness:Seriousness.SERIOUS,user:user).save(failOnError: true,flush:true)
             }
             2.times {
-                Topic topic = new Topic(createdBy: user,name: "Topic ${it + 6}", visibility:Visibility.PRIVATE).save(failOnError: true,flush:true)
+                Topic topic = new Topic(createdBy: user,name: "TopicPrivate ${it + 6}", visibility:Visibility.PRIVATE).save(failOnError: true,flush:true)
 
                 new Subscription(topic:topic,seriousness:Seriousness.SERIOUS,user:user).save(failOnError: true,flush:true)
             }
@@ -56,17 +56,25 @@ def bootstrapService
     void createResources()
     {
         List users =User.list()
+        int c=1
         users.each {User user ->
 
             List<Topic> topics=Topic.findAllByCreatedBy(user)
             topics.each {Topic topic->
                 5.times
                         {
-                            new LinkResource(createdBy:user,description:"Link Resource ${it} - ${topic} - ${user}"
+
+                          Resource resource=  new LinkResource(createdBy:user,description:"Link Resource ${it} - ${topic} - ${user}- ${c}"
                                     ,topic:topic,url:"http://www.google.com").save(failOnError:true, flush: true)
 
-                            new DocumentResource(createdBy:user,description:"Document Resource ${it}- ${topic} - ${user}"
+                            new ReadingItem(resource:resource, isRead: true, user: user).save()
+                            c++
+                           resource= new DocumentResource(createdBy:user,description:"Document Resource ${it}- ${topic} - ${user} -${c}"
                                     ,topic:topic,filePath:"C:\\users\\Desktop").save(failOnError:true,flush:true)
+
+                            new ReadingItem(resource:resource, isRead: true, user: user).save()
+
+                            c++
                         }
 
             }
@@ -75,21 +83,8 @@ def bootstrapService
 
     }
     void createReadingItems()
-    { List users =User.list()
-        int counter=0
-        users.each { User user ->
+    {
 
-            List<Subscription> sub = Subscription.findAllByUser(user)
-
-            List<Resource> res = Resource.findAllByTopicInList(sub.topic)
-            5.times {
-                Random random = new Random()
-
-                new ReadingItem(resource: Resource.get(Math.abs(random.nextInt(res.size() + 1))+res.size()*counter), isRead: true, user: user).save()
-            }
-            counter +=1
-
-        }
     }
     void createRatings()
     {

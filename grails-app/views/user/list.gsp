@@ -7,10 +7,10 @@
 </head>
 
 
-<body>
+<div>
 <div class="panel panel-default" align="left">
 
-    <form action="search">
+    <form action="list">
 
         <input type="search" class="form-control" placeholder="Search" name="search" style="float:right;width: 100px;margin-right: 40px">
         <g:submitButton name="Search" class="btn btn-default" style="float: right"/>
@@ -20,7 +20,7 @@
                 <option value="all">All Users</option>
                 <option value="inactive">InActive</option>
                 <option value="active">Active</option>
-            </select>
+            </select></div>
 </form>
     </div>
 
@@ -61,6 +61,9 @@
             </g:each>
         </table>
     </div>
+
+
+
 </div>
 
 

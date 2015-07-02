@@ -7,38 +7,34 @@ class HomeController {
 User user
 MailService mailService
     def beforeInterceptor = {
-        String userName= "${session["userName"]}"
+        String userName= session.userName
         user=User.findByUserName(userName)
 
     if(user==null)
-    {   flash.message="You Need to be logged in First"
-        redirect(controller: 'login',action: 'index')}
+    {   flash.message="You Need to be login First"
+        redirect(controller: 'login',action: 'index')
+    return false
     }
-    def index() {
-
-
-       // String userName= "${session["userName"]}"
-       // user=User.findByUserName(userName)
-
-        if(user!=null)
-        {
-            redirect(action:"dashboard")
-        }
-        else{redirect(controller: "login",action: "index")}
     }
+   SupportService supportService
 
+    static defaultAction = "dashboard"
 
- def dashboard()
+    def dashboard()
   {   //String userName= "${session["userName"]}"
       //user=User.findByUserName(userName)
-      def inbox_data=inbox_data()
-      def trendingTopics=trending_topic()
+      def inbox_data=supportService.inbox_data(user)
+      def trendingTopics=supportService.trending_topic()
+      List<Topic> subscribedTopic=Subscription.createCriteria().list ([max:5]){
 
-      int subscription_total = Subscription.countByUser(user)
+          projections{
+              property('topic')
+          }
+          eq('user',user)
+      }
 
-      int topic_total = Topic.countByCreatedBy(user)
 
-      [resources:inbox_data,user:user,subscription_total:subscription_total,topic_total:topic_total,trendingTopics:trendingTopics,user:user]
+      [resources:inbox_data,user:user,trendingTopics:trendingTopics,user:user,subscribedTopic:subscribedTopic]
   }
 
      def invitation()
@@ -73,13 +69,15 @@ MailService mailService
         if(valid) {
             Topic topic = Topic.findById(params['topic'])
             emails.each { email ->
+
+                String key=(topic.id+"^"+email).toString().encodeAsBase64()
                 mailService.sendMail {
                     //  async true
                     to email
                     subject "Invitation"
                     body """ Hi,
                           You are invited by ${user.firstName}  to join this Topic ${topic.name}
-
+                               http://localhost:8080/linksharing/subscription/permission/?key=${key}
 
                           """
                 }
@@ -90,117 +88,15 @@ MailService mailService
           }
     }
 
-    protected def trending_topic()
+    def logout()
     {
-        List<Topic> trendingTopics =Resource.createCriteria().list(max:5){
-        projections{
-            groupProperty ('topic')
-        }
-        count('topic','resCount')
-
-        'topic' {
-            eq('visibility',Visibility.PUBLIC)
-        }
-        order('resCount','desc')
-    }*.getAt(0)
-
-
-    }
-
-    protected def inbox_data()
-    {
-
-        List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
-            projections { property("topic") }
-            eq('user', user)
-        }
-        List<Resource> AllResource=Resource.createCriteria().list() {   // Second Searching Resources Of the Topics
-
-            inList ('topic', top )
-            order("lastUpdated","desc")
-        }
-
-        List<Resource> readResource=ReadingItem.createCriteria().list {
-            projections{
-                property('resource')
-            }
-            eq('user',user)
-            inList('resource',AllResource)
-
-        }
-        Set rs=AllResource.toSet()
-        Set rr=readResource.toSet()
-
-        List resource=(rs-rr).toList()
-
-        resource.sort{it.lastUpdated}
-        resource.reverse(true)
-        return resource
-    }
-
-    def shareDocument()
-    {
-//        String userName= "${session["userName"]}"
-//        user=User.findByUserName(userName)
-
-        List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
-            projections { property("topic") }
-            eq('user', user)
-        }
-        [topics:top]
-
+        session['userName']=null
+        session['admin']=null
+        flash.message="Successfully Log Out"
+        redirect(controller: "login",action: "index")
     }
 
 
-    def document_download()
-  {
-   Resource resource =Resource.findById(params['id'])
-
-      def file = new File("${resource.filePath}")
-
-      if (file.exists())
-        {
-            response.setContentType("application/octet-stream") // or or image/JPEG or text/xml or whatever type the file is
-            response.setHeader("Content-disposition", "attachment;filename=\"${resource.fileName}\"")
-            response.outputStream << file.bytes
-        }
-        else render "File Not Found ...Error!"
-
-    }
-
-    def document_create()
-    {
-//        String userName= "${session["userName"]}"
-//        user=User.findByUserName(userName)
-
-        def file = request.getFile('file')
-        if(file.empty) {
-            flash.message = "File cannot be empty"
-        }
-        else {
-            DocumentResource documentResource=new DocumentResource()
-            documentResource.topic=Topic.findById(params['topic'])
-            String s=file.originalFilename+new Date()
-            documentResource.description=params['description']
-            documentResource.createdBy=user
-            documentResource.fileName=file.originalFilename
-
-            String path='web-app/document/'+"${documentResource.topic.id}/"
-
-            File dir=new File(path)
-            if( !dir.exists() ) {
-
-                dir.mkdirs()
-            }
-            documentResource.filePath = path + s
-            file.transferTo(new File(documentResource.filePath))
-
-            documentResource.save(failOnError: true)
-            redirect(controller: "home",action: "dashboard")
-        }
-
-
-    }
 
 
 }

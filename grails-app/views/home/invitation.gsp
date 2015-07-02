@@ -8,7 +8,7 @@
 
 
 <body>
-<div style="border:solid thick " >
+<div >
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if><div class="panel panel-default">
@@ -24,7 +24,7 @@
             </div>
             <label>Topic</label>
 
-            <g:select name="topic" from="${subscribed.id}"
+            <g:select name="topic" from="${subscribed}" optionKey="id" optionValue="name"
             />
             <button type="submit" class="btn btn-default">Invite</button>
             <button class="btn btn-default">Cancel</button>

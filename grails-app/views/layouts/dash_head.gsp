@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="${resource(dir:'css',file: 'bootstrap.min.css')}" >
     <script rel="script"  src="${resource(dir: 'js',file: 'bootstrap.min.js')}"></script>
     <link rel="stylesheet" href="${resource(dir:'css',file: 'bootstrap-them.min.css')}" >
-
     <g:layoutHead/>
 
 </head>
@@ -33,10 +32,10 @@
     <table align="right">
     <h2>
  <tr>
-     <td> &nbsp;<form class="form-search">
-         <input type="text" class="input-medium search-query">
+     <td> &nbsp;<g:form class="form-search" action="find" controller="search">
+         <input type="text" class="input-medium search-query" name="search">
          <button type="submit" class="btn">Search</button>
-     </form>
+     </g:form>
      </td>
 <g:if test="${session['userName']}">
      <td>  &nbsp;&nbsp; <g:link action="invitation" controller="home">
@@ -57,18 +56,23 @@
  </td>
 
      <td>
-&nbsp;&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${session['userName']}
+&nbsp;&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${session.userName}
+
+<g:link controller="user" action="profile">Profile</g:link>
+     <g:link controller="user" action="list">Users</g:link>
+     <g:link>Topics</g:link>
+     <g:link>Posts</g:link>
+     <g:link controller="home" action="logout">Logout</g:link>
 
 
-
- </td>
+     </td>
 </g:if>
  </tr>
 </h2>
 </table>
 </div>
-
-
+<div style="border: solid;border-color: grey">
 <g:layoutBody/>
+</div>
 </body>
 </html>

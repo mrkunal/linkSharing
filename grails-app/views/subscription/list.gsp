@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: ubuntu
-  Date: 24/6/15
-  Time: 8:53 AM
+  Date: 1/7/15
+  Time: 7:41 PM
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -12,9 +12,6 @@
 </head>
 
 <body>
-
-${resource}
-%{--<g:render template="viewPost" model="[rs:resource]"/>--}%
 
 </body>
 </html>

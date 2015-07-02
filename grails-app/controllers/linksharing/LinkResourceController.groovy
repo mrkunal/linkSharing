@@ -3,7 +3,6 @@ package linksharing
 class LinkResourceController {
 
 
-    static scaffold=true
 
     def create()
     {
@@ -34,6 +33,9 @@ class LinkResourceController {
         }
         else {
             linkResource.save(failOnError: true)
+            Resource resource=linkResource
+            new ReadingItem(resource:resource, isRead: true, user: user).save()
+            flash.message="Link Resource Successfully Shared"
             redirect(controller: "home", action: "dashboard")
         }
     }

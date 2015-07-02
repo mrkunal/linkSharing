@@ -8,7 +8,7 @@
 
 
 <body>
-<div style="border:solid thick " >
+<div >
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
@@ -30,8 +30,8 @@
     </div>
     <label>Topic</label>
 
-    <g:select name="topic" from="${topics.id}"
-               />
+    <g:select name="topic" from="${topics}" optionKey="id" optionValue="name"
+    />
     <button type="submit" class="btn btn-default">Share</button>
     <button class="btn btn-default">Cancel</button>
 </form>

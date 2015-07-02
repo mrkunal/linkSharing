@@ -2,57 +2,51 @@ package linksharing
 
 class LoginController {
     def mailService
-
+     SupportService supportService
     def index() {
 
         //Only Public Topics Resource is to be visible in recent shares
         List<Topic> top =Topic.findAllByVisibility("PUBLIC")
         List<Resource> rlist=Resource.findAllByTopicInList(top,[sort:'lastUpdated',order: "desc",max: 5])
-
-
-        List<Resource> Allresources=Resource.findAllByTopicInList(top)
-        List<Resource> topposts=ResourceRating.createCriteria().list([max:5]) {
-            projections{
-                groupProperty("resource")
-                sum("score",'sum')
-
+        List<Resource> topposts
+        if(params['sort']==null||params['sort']=='today')
+             topposts=supportService.topPost(new Date()-1)
+        else if(params['sort']=='week')
+        { def date
+            use (groovy.time.TimeCategory) {
+                 date = new Date() - 7.days
             }
-            order('sum','desc')
-            inList('resource',Allresources)
-
-        }*.getAt(0)
-
-
-     /*   List score                            // can be used to show ratings score.
-        List<Resource> topResource
-         topposts.each{toppost->
-             score<<toppost.last()
-            topResource <<toppost.first()
-         //   println t+"  "+ r
+            topposts=supportService.topPost(date)
         }
-         */
-
+        else if(params['sort']=='month')
+        { def date
+            use (groovy.time.TimeCategory) {
+                date = new Date() - 1.month
+            }
+            topposts=supportService.topPost(date)
+        }
+        else if(params['sort']=='year')
+        { def date
+            use (groovy.time.TimeCategory) {
+                date = new Date() - 1.year
+            }
+            topposts=supportService.topPost(date)
+        }
         [resources:rlist,toppost:topposts]
 
     }
     def loginHandler(){
-   /*     User user = User.findByUserName(params.userName)
-        if(user.password == params.password.toString().encodeAsMD5()){
-  render "Verified User"
-        }
-        else {
 
-            render "UnVerified User"
-        } */
         String email = params.get("email");
         String password = params.get("password")
         User user = User.findByEmail(email);
 
-        if (user?.password == password) {
+        if (user!=null && user.password == password.encodeAsMD5() && user.active==true) {
             session["userName"] = user.userName;
-            session["user_id"] = user.id;
+            //session["user_id"] = user.id;
+            session["admin"]=user.admin
             flash.message="Successfully Login"
-            redirect(controller: "home", action: "index")
+            redirect(controller: "home", action: "dashboard")
         } else {
             flash.message="UserId or Password Mismatch"
             redirect(controller: "login", action: "index")
@@ -65,16 +59,17 @@ class LoginController {
     def register(UserCO userco)
     {
           User user=new User();
-        bindData(user,userco)
+          bindData(user,userco)
 
             if ((!user.validate())||(userco.password!=userco.confirmPassword)) {
-                flash.message="Error while validating the fields."+params+errors
+                flash.message="Error while validating the fields."
                 redirect(controller:"login",action:"index")
 
             }
             else {
-                def file=request.getFile('pic')
 
+                user.password=user.password.encodeAsMD5()
+                def file=request.getFile('pic')
 
                 if(!file.empty) {
                     user.photoName = file.contentType
@@ -130,7 +125,7 @@ def password=new String()
             subject "Password Reset"
             body "Your New Password is :" + "${password}"
         }
-        user.password=password
+        user.password=password.encodeAsMD5()
         user.save(flush: true)
         flash.message="password Sent"
         redirect(action:"forgot")}

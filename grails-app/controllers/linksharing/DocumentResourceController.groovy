@@ -2,12 +2,11 @@ package linksharing
 
 class DocumentResourceController {
 
-    def scaffold=true
 
     def create()
     {
-        String userName= "${session["userName"]}"
-       User user=User.findByUserName(userName)
+         String userName= "${session["userName"]}"
+         User user=User.findByUserName(userName)
 
         List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
             projections { property("topic") }
@@ -44,9 +43,31 @@ class DocumentResourceController {
             file.transferTo(new File(documentResource.filePath))
 
             documentResource.save(failOnError: true)
+            Resource resource=documentResource
+            new ReadingItem(resource:resource, isRead: true, user: user).save()
             flash.message="Document Resource Shared Successfully"
             redirect(controller: "home",action: "dashboard")
         }
 
     }
+
+
+    def document_download()
+  {
+      Resource resource =Resource.findById(params['id'])
+
+      def file = new File("${resource.filePath}")
+
+      if (file.exists())
+        {
+            response.setContentType("application/octet-stream") // or or image/JPEG or text/xml or whatever type the file is
+            response.setHeader("Content-disposition", "attachment;filename=\"${resource.fileName}\"")
+            response.outputStream << file.bytes
+        }
+        else render "File Not Found ...Error!"
+
+    }
+
+
+
 }

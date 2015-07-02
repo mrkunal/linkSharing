@@ -5,12 +5,14 @@
 
     <gt:pic uid="${rs.createdBy.id}"/>
 
-    <i>${rs.createdBy.firstName} @${rs.createdBy.userName}</i> <a href="www.google.com">${rs.topic.name}</a>
+    <i>${rs.createdBy.firstName} @${rs.createdBy.userName}</i>
+    <g:link controller="topic" action="show" params="[topicId: rs.topic.id]"> ${rs.topic.name} </g:link>
+
     <br/>
     <br/>
     ${rs.description}
 
-    <a href="www.google.com">view Post</a>
+    <g:link controller="resource" action="viewPost" params="[resource:rs.id]">View Post</g:link>
 
     <br/>
 </g:each>

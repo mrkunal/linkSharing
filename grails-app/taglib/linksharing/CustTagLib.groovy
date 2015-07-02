@@ -17,9 +17,12 @@ class CustTagLib {
         def id = attrs.uid
 
         User user = User.findById(id)
-      if((user.photo==null)) {
+
+       if((user.photo==null)) {
         sb << """
-       <img src="${createLinkTo(dir: 'images', file: 'def_avatar2.png')}" width="120" height="130" class="img-rounded"/>
+
+        <img src="${createLinkTo(dir: 'images', file: 'def_avatar2.png')}" width="120" height="130" class="img-rounded"/>
+
         """
         }
         else{
@@ -28,7 +31,11 @@ class CustTagLib {
           sb << "' width='120' height='130' class=\"img-rounded\"/>"
 
             }
-        out<<sb.toString()
+
+        out << g.link(controller: 'user', action: 'show', params: [uid: user.id]){sb.toString()}
+        //out<< "<g:link controller: 'user' action :'show' params:[present:'yes']>"
+        //out<<sb.toString()
+       //out<< "</g:link>"
     }
     def time={ attrs->
         StringBuilder sb=new StringBuilder()
@@ -49,11 +56,92 @@ class CustTagLib {
         else
         { sb<<min +" mins ago" }
 
-            out<< sb
+            out<<sb                             //    deployment time
+            //out<< resource_time             //      compile time
+    }
+    def subscriptionCount={ attrs,body->
+        def id = attrs.uid
+        def userName =session['userName']
+
+        User showUser=User.findById(id)
+        User loggedUser=User.findByUserName(userName)
+        int subscriptionTotal=0
+       if(showUser==loggedUser || loggedUser.admin==true)
+        {                                             // Each Topic Counting Subscribers
+            subscriptionTotal =Subscription.createCriteria().get{
+                projections { rowCount() }
+
+                eq("user",showUser)
+
+            }
+        }
+        else{
+            subscriptionTotal =Subscription.createCriteria().get{
+                projections { rowCount() }
+                'topic'{
+                    eq('visibility',Visibility.PUBLIC)
+
+                }
+                eq("user",showUser)
+
+            }
+
+        }
+        out<<subscriptionTotal
+
+        }
+
+
+    def postCount={ attrs,body->
+        def id = attrs.uid
+        def userName =session['userName']
+
+        User showUser=User.findById(id)
+        User loggedUser=User.findByUserName(userName)
+        int postTotal=0
+        if(showUser==loggedUser || loggedUser.admin==true)
+        {                                             // Each Topic Counting Subscribers
+            postTotal =Resource.createCriteria().get{
+                projections { rowCount() }
+
+                eq("createdBy",showUser)
+
+            }
+        }
+        else{
+            postTotal =Resource.createCriteria().get{
+                projections { rowCount() }
+                'topic'{
+                    eq('visibility',Visibility.PUBLIC)
+
+                }
+                eq("createdBy",showUser)
+
+            }
+
+        }
+        out<<postTotal
+
+    }
+    def topicCount=
+    {   attrs,body->
+        User user=User.findById(attrs.uid)
+        int topic_total
+        if(session['userName']==user.userName||session['admin']==true) {
+            topic_total = Topic.countByCreatedBy(user)
+
+        }
+        else
+        {
+            topic_total=Topic.countByCreatedByAndVisibility(user,Visibility.PUBLIC)
+
+
+
+        }
+        out<< topic_total
     }
 
     def show={attrs ,body->
-
 
     }
 }

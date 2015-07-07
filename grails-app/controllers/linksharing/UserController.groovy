@@ -158,8 +158,33 @@ def list()
 
     def show()
     {
+        User showUser=User.findById(params['uid'])
+        User user=User.findByUserName(session['userName'])
+        List<Resource> posts
 
-       // render params['uid']
+      if(user.admin==true||user==showUser) {
+           posts = Resource.createCriteria().list()
+                  {
+
+                      eq('createdBy', showUser)
+                    order('lastUpdated','desc')
+
+                  }
+      }
+        else{
+          posts = Resource.createCriteria().list()
+                  {
+
+                      eq('createdBy', showUser)
+                      order('lastUpdated','desc')
+                      'topic'
+                              {
+                                  eq('visibility',Visibility.PUBLIC)
+                              }
+                  }
+
+      }
+        [showUser:showUser,posts:posts]
 
     }
 

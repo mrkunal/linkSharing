@@ -144,4 +144,20 @@ class CustTagLib {
     def show={attrs ,body->
 
     }
+
+    def topicSubscriptionCount={
+        attrs,body->
+            Topic topic=Topic.findById(attrs.tid)
+            int subscription_total
+
+           subscription_total= Subscription.countByTopic(topic)
+       out<<subscription_total
+    }
+    def topicPostCount={
+        attrs,body->
+            Topic topic=Topic.findById(attrs.tid)
+            int post_total
+            post_total=Resource.countByTopic(topic)
+            out<<post_total
+    }
 }

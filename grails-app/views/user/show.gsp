@@ -19,36 +19,22 @@
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
     <div style="width: 45%;float: left">
-        <div class="panel panel-default"  style="width: 500px">
-            <g:render template="/home/info" model="[user: us]"/>
 
-        </div>
+            <g:render template="/home/info" model="[user: showUser]"/>
 
-        <div class="panel panel-default"  style="width: 550px">
-            <div class="panel-heading" align="left">
-                <h3 class="panel-title">Users : ${topic.name}</h3>
-            </div>
-            <div style="max-height: 200px;overflow:scroll">
-                <g:each in="${users}" var="us">
-                    <g:render template="/home/info" model="[user: us]"/>
-
-                </g:each>
-            </div>
-        </div>
     </div>
 
 
     <div style="width:50%;float:right">
         <div class="panel panel-default" style="width: 600px"  >
             <div class="panel-heading" align="left">
-                <h3 class="panel-title">Topic:" ${topic.name} "
-                    <g:form action="search" controller="topic">
-                        <input type="text" value="${params['search']}">
-                        <g:submitButton name="button" value="search"/>
-                    </g:form> </h3>
+                <h3 class="panel-title">Posts
+                        <input type="text" value="${params['search']}" style="float: right">
+
+                     </h3>
             </div>
 
-            <g:render template="/home/inbox" model="[resources: resources]"/>
+            <g:render template="/home/inbox" model="[resources: posts]"/>
         </div>
     </div>
 

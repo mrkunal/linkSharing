@@ -8,33 +8,38 @@ class LoginController {
         //Only Public Topics Resource is to be visible in recent shares
         List<Topic> top =Topic.findAllByVisibility("PUBLIC")
         List<Resource> rlist=Resource.findAllByTopicInList(top,[sort:'lastUpdated',order: "desc",max: 5])
-        List<Resource> topposts
-        if(params['sort']==null||params['sort']=='today')
-             topposts=supportService.topPost(new Date()-1)
-        else if(params['sort']=='week')
-        { def date
-            use (groovy.time.TimeCategory) {
-                 date = new Date() - 7.days
-            }
-            topposts=supportService.topPost(date)
-        }
-        else if(params['sort']=='month')
-        { def date
-            use (groovy.time.TimeCategory) {
-                date = new Date() - 1.month
-            }
-            topposts=supportService.topPost(date)
-        }
-        else if(params['sort']=='year')
-        { def date
-            use (groovy.time.TimeCategory) {
-                date = new Date() - 1.year
-            }
-            topposts=supportService.topPost(date)
-        }
+        List<Resource> topposts=supportService.topPost(new Date()-1)
         [resources:rlist,toppost:topposts]
 
     }
+def topPostAjax()
+{
+    List<Resource> topposts
+    if(params['sort']==null||params['sort']=='today')
+        topposts=supportService.topPost(new Date()-1)
+    else if(params['sort']=='week')
+    { def date
+        use (groovy.time.TimeCategory) {
+            date = new Date() - 7.days
+        }
+        topposts=supportService.topPost(date)
+    }
+    else if(params['sort']=='month')
+    { def date
+        use (groovy.time.TimeCategory) {
+            date = new Date() - 1.month
+        }
+        topposts=supportService.topPost(date)
+    }
+    else if(params['sort']=='year')
+    { def date
+        use (groovy.time.TimeCategory) {
+            date = new Date() - 1.year
+        }
+        topposts=supportService.topPost(date)
+    }
+   render (template: 'recentShare',model:[resources: topposts])
+}
     def loginHandler(){
 
         String email = params.get("email");

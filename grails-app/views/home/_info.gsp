@@ -5,8 +5,12 @@
         <div style="float: left;width: 50%">
     <h2> ${user.firstName} ${user.lastName} </h2>
     <h4> ${user.userName}</h4>
-    Topics :<gt:topicCount uid="${user.id}"/>
-    Subscriptions :<gt:subscriptionCount uid="${user.id}"/>
+    Topics :<g:link controller="topic" action="list" params="[uid:user.id,operation:'topic']">
+    <gt:topicCount uid="${user.id}"/>
+    </g:link>
+    Subscriptions :<g:link controller="topic" action="list" params="[uid:user.id,operation: 'subscriptions']">
+    <gt:subscriptionCount uid="${user.id}"/></g:link>
+
         </div>
 </div>
 </div>

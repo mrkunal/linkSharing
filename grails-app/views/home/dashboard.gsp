@@ -17,11 +17,11 @@
 
 <body>
 <div>
+
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
-
-<table align="center">
+    <table align="center">
     <tr>
         <td>
 <g:render template="info" model="[user:user]"/>
@@ -29,8 +29,9 @@
             <div class="panel panel-default" style="width: 500px"  >
                 <div class="panel-heading" align="left">
                     <h3 class="panel-title">Subscriptions     <span style="float: right">
-                        <g:link controller="subscription" action="list">View All</g:link>
-                    </span>
+                        <g:link controller="topic" action="list" params="[uid:user.id,operation: 'subscriptions']">
+                            View All</g:link>
+                      </span>
                     </h3></div>
                 <g:render template="trending" model="[user: user,trendingTopics:subscribedTopic]"/>
             </div>

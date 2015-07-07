@@ -11,6 +11,14 @@
     <title>Main Page</title>
     <meta name="layout" content="dash_head">
 
+    <script type="text/javascript">
+        var findtoppost=function(value){
+            var sort=value
+            <g:remoteFunction controller="login" action="topPostAjax" update="one" params='{sort:sort}'/>
+        }
+
+   </script>
+
 </head>
 <body>
 <div class="container" style="border:thin; width: 100%">
@@ -40,20 +48,18 @@
         <br/><br/><br/><br/><br/>
                 <div class="panel panel-default" style="width: 550px">
                     <div class="panel-heading" >
-                        <h3 class="panel-title">Top Posts <g:form class="form-search" action="index" controller="login">
-                            <select style="float: right" name="sort">
+                        <h3 class="panel-title">Top Posts
+                            <select id="sort" style="float: right" name="sort" onchange="findtoppost(value)">
                                 <option value="today">Today</option>
                                 <option value="week">1 Week</option>
                                 <option value="month">1 Month</option>
                                 <option value="year">1 Year</option>
                             </select>
-                            <button type="submit" class="btn">Sort</button>
 
-                        </g:form>  </h3>
+                        </h3>
                     </div>
-
-                    <g:render template="recentShare" model="[resources: toppost]"/>
-
+                   <div id="one"> <g:render id="one" template="recentShare" model="[resources: toppost]"/>
+                   </div>
                 </div>
     </div>
                 %{--toppostt--}%

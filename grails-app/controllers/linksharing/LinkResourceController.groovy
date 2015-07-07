@@ -29,14 +29,14 @@ class LinkResourceController {
         linkResource.description=params['description']
         if(!linkResource.validate()) {
             flash.message="Error while Sharing"
-            redirect(controller: "home", action: "dashboard")
+            redirect(controller: "linkResource", action: "create")
         }
         else {
             linkResource.save(failOnError: true)
             Resource resource=linkResource
             new ReadingItem(resource:resource, isRead: true, user: user).save()
             flash.message="Link Resource Successfully Shared"
-            redirect(controller: "home", action: "dashboard")
+            redirect(controller: "linkResource", action: "create")
         }
     }
 

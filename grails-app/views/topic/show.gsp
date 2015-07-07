@@ -10,7 +10,13 @@
 <head>
     <title>Main Page</title>
     <meta name="layout" content="dash_head">
-
+<script type="text/javascript">
+    var searchInTopic=function(search){
+        <g:remoteFunction controller="topic" action="search" update="resourceList"
+        params='{searchString:search,topicId:${topic.id}}'/>
+       // alert(eb)
+    }
+</script>
 </head>
 <body>
 
@@ -51,14 +57,13 @@
         <div style="width:50%;float:right">
             <div class="panel panel-default" style="width: 600px"  >
                 <div class="panel-heading" align="left">
-                    <h3 class="panel-title">Topic:" ${topic.name} "
-                        <g:form action="search" controller="topic">
-                            <input type="text" value="${params['search']}">
-                           <g:submitButton name="button" value="search"/>
-                    </g:form> </h3>
+                    <h3 class="panel-title">Posts:" ${topic.name} "
+                       <input style="float: right" type="text" onchange="searchInTopic(value)"  name="searchString">
+                     </h3>
                 </div>
-
+                <div id="resourceList">
                 <g:render template="/home/inbox" model="[resources: resources]"/>
+                </div>
             </div>
         </div>
 

@@ -72,10 +72,10 @@ class SupportService {
         List<Resource> topposts=ResourceRating.createCriteria().list([max:5]) {
         projections{
             groupProperty("resource")
-            avg("score",'avg')
+            sum("score",'sum')
 
         }
-        order('avg','desc')
+        order('sum','desc')
         inList('resource',Allresources)
         'resource'
                 {

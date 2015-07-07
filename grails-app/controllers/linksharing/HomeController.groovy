@@ -39,8 +39,10 @@ MailService mailService
 
      def invitation()
     {
-       def topics=Subscription.findAllByUser(user)
-        [subscribed: topics.topic]
+        def topics=Subscription.findAllByUser(user)
+
+        [subscribed: topics.topic,topic:params['topicId']]
+
     }
 
     def invite() {
@@ -62,7 +64,7 @@ MailService mailService
             }
         }
         catch(Exception e){
-            flash.message="Not a Valid Email Id Set..!please Check ie. 'emailid@domain.com;emailid2@domain.com'"
+             flash.message="Not a Valid Email Id Set..!please Check ie. 'emailid@domain.com;emailid2@domain.com'"
              redirect (controller: 'home',action:'invitation' )
         }
 
@@ -77,14 +79,20 @@ MailService mailService
                     subject "Invitation"
                     body """ Hi,
                           You are invited by ${user.firstName}  to join this Topic ${topic.name}
+                          click the below link..for subscribe
                                http://localhost:8080/linksharing/subscription/permission/?key=${key}
 
+
+                            Thanks
+
+                            Regards
+                            LinksharingTeam
                           """
                 }
 
             }
             flash.message = "Invitations Successfully Sends."
-            redirect(controller: 'home',action: 'dashboard')
+            redirect(controller: 'home',action: 'invitation')
           }
     }
 

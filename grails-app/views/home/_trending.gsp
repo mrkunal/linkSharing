@@ -1,104 +1,77 @@
 <%@ page import="linksharing.*" %>
 
+<script type="text/javascript">
+    var sendInvitation=function(val)
+    {
+        window.open("${g.createLink(controller: 'home', action: 'invitation',params: [topicId:val])}",'', 'width=400,height=300');
+
+    }
+    var subscribeAndUnsubscribe=function(val){
+        alert ("Subscribe"+val)
+        var s="sub"+val
+
+        <g:remoteFunction controller="subscription" action="subscribeAndUnsubscribe" update="s" params='{topicId:val}'/>
+ //      $('#sub'+val).innerHTML="subscribe"
+//
+        %{--$('#div'+val).innerHTML=<g:render template="trendingsub" model="[topic:Topic.first(),user: user]"/>--}%
+        %{--$('#div'+val).innerHTML= <g:render template="trendingsub" model="[topic:Topic.first(),user: user]"/>--}%
+
+    }
+
+    var del=function(val)
+    {
+        <g:remoteFunction controller="topic" action="delete" params='{topicId:val}'/>
+
+        $('#div'+val).empty()
+
+        $('<span style="color: green;float: right;font-size: medium">Topic Deleted Successfully</span>')
+                .insertBefore('#msg')
+                .delay(3000)
+                .fadeOut(function() {
+                    $(this).remove();
+                });
+
+    }
+
+    var seriousnessChange=function(val,tid)
+    {
+        <g:remoteFunction controller="subscription" action="seriousnessChange" params='{topicId:tid,seriousness:val}'/>
+
+        $('#div'+val).empty()
+
+        $('<span style="color: green;float: right;font-size: medium">Seriousness Changed.</span>')
+                .insertBefore('#msg')
+                .delay(3000)
+                .fadeOut(function() {
+                    $(this).remove();
+                });
+    }
+
+    var visibilityChange=function(val,tid)
+    {
+        <g:remoteFunction controller="subscription" action="visibilityChange" params='{topicId:tid,visibility:val}'/>
+
+        $('#div'+val).empty()
+
+        $('<span style="color: green;float: right;font-size: medium">Visibility Changed.</span>')
+                .insertBefore('#msg')
+                .delay(3000)
+                .fadeOut(function() {
+                    $(this).remove();
+                });
+
+    }
+
+
+
+</script>
+
 <div class="panel-body" style="max-height:300px;width:500px;overflow: scroll">
         <g:each in="${trendingTopics}" var="topic">
-
-            <div class="panel-body">
-
-                <div style="width: 100%;float: left">
-
-                    <div style="width:40%;float:left">
-
-                <gt:pic uid="${topic.createdBy.id}"/>
-
+            <div class="panel-body" id="div${topic.id}">
+            <g:render template="/home/trendingsub" model="[topic:topic,user:user]"/>
+                <hr/>
             </div>
-                    <g:if test="${topic.createdBy!=user && user.admin==false}">
-            <div style="width: 50%;float: left">
-                <g:link controller="topic" action="show" params="[topicId: topic.id]"> ${topic.name} </g:link>
-
-                <br/><b><i>${topic.createdBy.userName}</i></b>
-      <br/><br/>
-            &ensp;
-                Subscriptions
-                <g:link><gt:subscriptionCount uid="${topic.createdBy.id}"/></g:link>
-            &ensp;
-                Posts
-                <g:link><gt:postCount uid="${topic.createdBy.id}"/></g:link>
-                <br/>
-            &ensp;
-                <%  def sub1=Subscription.findByUserAndTopic(user,topic)
-                    if (sub1){ %>
-                <g:link controller="subscription" action="unSubscribe" params="[topicId:topic.id]">Unsubscribe</g:link>
-            &ensp;
-                <g:select id="seriousness" name="seriousness" from="${['Casual','Very Serious','Serious']}" keys="${[Seriousness.CASUAL,Seriousness.VERYSERIOUS,Seriousness.SERIOUS]}"
-                          value="${sub1.seriousness}" />
-
-            &nbsp;&nbsp; <g:link action="invitation" controller="home" params="[topicId:topic.id]">
-           <br/>     <span class="glyphicon glyphicon-envelope" style="float: right" aria-hidden="true"></span>
-            </g:link>
-                <% }
-                else{ %>
-                <g:link controller="subscription" action="subscribe" params="[topicId:topic.id]">Subscribe</g:link>
-                <g:select id="seriousness" name="seriousness" from="${['Casual','Very Serious','Serious']}" keys="${[Seriousness.CASUAL,Seriousness.VERYSERIOUS,Seriousness.SERIOUS]}"
-                          value="" />
-                <% }%>
-
-            </div>
-    </g:if>
-    <g:if test="${topic.createdBy==user || user.admin==true}">
-        <div style="width: 50%;float: left">
-            <g:link controller="topic" action="show" params="[topicId: topic.id]">  ${topic.name} </g:link>
-     <br/>
-            <b><i>${topic.createdBy.userName}</i></b>
-            <br/><br/>
-        &ensp;
-            Subscriptions
-            <g:link><gt:subscriptionCount uid="${topic.createdBy.id}"/></g:link>
-        &ensp;
-            Posts
-            <g:link><gt:postCount uid="${topic.createdBy.id}"/></g:link>
-            <br/>
-        &ensp;
-            <%  def sub=Subscription.findByUserAndTopic(user,topic)
-                if (sub){ %>
-            <g:link controller="subscription" action="unSubscribe" params="[topicId:topic.id]">Unsubscribe</g:link>
-        <br/>
-        &ensp;
-            <g:select id="seriousness" name="seriousness" from="${['Casual','Very Serious','Serious']}" keys="${[Seriousness.CASUAL,Seriousness.VERYSERIOUS,Seriousness.SERIOUS]}"
-                      value="${sub.seriousness}" />
-
-            <g:select id="visibility" name="visibility" from="${['Private','Public']}" keys="${[Visibility.PRIVATE,Visibility.PUBLIC]}"
-                      value="${topic.visibility}" />
-
-<br/>
-       <div style="float: right"> <g:link action="invitation" controller="home" params="[topicId:topic.id]">
-            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-        </g:link>
-        &nbsp;&nbsp;
-            <g:link action="invitation" controller="home">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-            </g:link>
-        &nbsp;&nbsp;
-            <g:link action="invitation" controller="home">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            </g:link>
-       </div>
-            <% }
-            else{ %>
-            <g:link controller="subscription" action="subscribe" params="[topicId:topic.id]">Subscribe</g:link>
-
-            <g:select id="seriousness" name="seriousness" from="${['Casual','Very Serious','Serious']}" keys="${[Seriousness.CASUAL,Seriousness.VERYSERIOUS,Seriousness.SERIOUS]}"
-                      value="" />
-            <% }%>
-
-        </div>
-
-    </g:if>
-
-</div>
-
-            </div>
-            <hr/>
         </g:each>
 
     </div>

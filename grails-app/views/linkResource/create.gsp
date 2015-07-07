@@ -1,8 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <meta name="layout" content="dash_head">
-    <title>LinkSharing</title>
+    <g:javascript library="jquery"/>
+    <script rel="script"  src="${resource(dir: 'js',file: 'bootstrap.min.js')}"></script>
+    <link rel="stylesheet" href="${resource(dir:'css',file: 'bootstrap.min.css')}" >
+    <link rel="stylesheet" href="${resource(dir:'css',file: 'bootstrap-theme.min.css')}" >
+    <title>Link Create</title>
+
+    <script  type="text/javascript">
+
+        var exit=function()
+        {
+            window.close()
+        }
+
+    </script>
 
     </head>
 
@@ -33,7 +45,7 @@
     <g:select name="topic" from="${topics}" optionKey="id" optionValue="name"
     />
     <button type="submit" class="btn btn-default">Share</button>
-    <button class="btn btn-default">Cancel</button>
+    <button class="btn btn-default" onclick="exit()">Cancel</button>
 </form>
      </div>
 </div>

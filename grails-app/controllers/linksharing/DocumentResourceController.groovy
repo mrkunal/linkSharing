@@ -22,7 +22,8 @@ class DocumentResourceController {
 
         def file = request.getFile('file')
         if(file.empty) {
-            flash.message = "File cannot be empty"
+            flash.message = "Some Error Occured"
+            redirect(controller: "documentResource",action: "create")
         }
         else {
             DocumentResource documentResource=new DocumentResource()
@@ -46,7 +47,7 @@ class DocumentResourceController {
             Resource resource=documentResource
             new ReadingItem(resource:resource, isRead: true, user: user).save()
             flash.message="Document Resource Shared Successfully"
-            redirect(controller: "home",action: "dashboard")
+            redirect(controller: "documentResource",action: "create")
         }
 
     }
@@ -60,7 +61,7 @@ class DocumentResourceController {
 
       if (file.exists())
         {
-            response.setContentType("application/octet-stream") // or or image/JPEG or text/xml or whatever type the file is
+            response.setContentType("application/octet-stream")
             response.setHeader("Content-disposition", "attachment;filename=\"${resource.fileName}\"")
             response.outputStream << file.bytes
         }

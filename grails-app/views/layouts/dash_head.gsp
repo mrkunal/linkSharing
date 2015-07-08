@@ -10,6 +10,7 @@
 
     %{--<!-- Latest compiled and minified JavaScript -->--}%
     %{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>--}%
+    <link rel="shortcut icon" href="${assetPath(src: 'icon1.ico')}" type="image/x-icon">
 
     <g:javascript library="jquery"/>
     <script rel="script"  src="${resource(dir: 'js',file: 'bootstrap.min.js')}"></script>

@@ -48,7 +48,7 @@ def create()
                 eq('topic',topic)
 
             }
-            List<Resource> resources=Resource.findAllByTopic(topic,[max:10])
+            List<Resource> resources=Resource.findAllByTopic(topic,[max:10,sort:'lastUpdated',order:'desc'])
 
             [user: user,topic:topic,resources:resources,users:users]
 

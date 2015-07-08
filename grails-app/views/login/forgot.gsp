@@ -16,7 +16,7 @@
 </head>
 
 <body>
-<div style="border:solid thick " >
+<div >
 
 
     <g:if test="${flash.message}">

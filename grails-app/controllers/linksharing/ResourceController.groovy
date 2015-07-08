@@ -28,13 +28,30 @@ class ResourceController {
  {
      User user=User.findByUserName(session['userName'])
      Resource resource =Resource.findById(params['resource'])
-
+    int userRating
+    ResourceRating resourceRating=ResourceRating.findByUserAndResource(user,resource)
+     if(resourceRating==null)
+     { userRating = 0 }
+     else
+     { userRating=resourceRating.score }
 
      boolean access=false
      if(user.admin==true || user==resource.createdBy)
      { access=true }
      int usersRate=ResourceRating.countByResource(resource)
-         [resource:resource,access:access,usersRate:usersRate,trendingTopics:supportService.trending_topic(),user:user]
+     def ratings=ResourceRating.createCriteria().list(){
+         projections {
+             sum('score', 'score')
+         }
+eq('resource',resource)
+     }.getAt(0)
+
+if(ratings==null)
+{ratings=0 }
+     println ratings
+         [resource:resource,access:access,usersRate:usersRate,
+          trendingTopics:supportService.trending_topic(),user:user,
+          ratings:ratings,userRating:userRating]
 
  }
 def rate()
@@ -50,8 +67,22 @@ def rate()
         resourceRating=new ResourceRating(user:user,resource: resource,score:params['rate'].toString().toInteger())
         resourceRating.save(failOnError: true,flush: true)
     }
-    flash.message="Rate Successfully"
-    redirect(controller: 'home',action: 'dashboard')
+
+    int usersRate=ResourceRating.countByResource(resource)
+    def ratings=ResourceRating.createCriteria().list(){
+        projections {
+            sum('score', 'score')
+        }
+
+        eq('resource',resource)
+    }.getAt(0)
+
+    if(ratings==null)
+    {ratings=0 }
+
+ def list=[ratings,usersRate]
+    render list
+
 }
     def delete()
     { Resource resource =Resource.findById(params['resource'])
@@ -64,6 +95,8 @@ def rate()
       resource.delete(flush: true)
         flash.message='Resource Deleted'
       redirect(controller: 'home',action: 'dashboard')      }
+
+
 
     def edit()
     {render params }

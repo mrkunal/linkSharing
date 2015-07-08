@@ -3,7 +3,7 @@ package linksharing
 class ApplicationFilters {
 
     def filters = {
-        all(controller:"login|assets", action: 'index|loginHandler|register|forgot|topPostAjax' ,invert:"true") {
+        all(controller:"login|assets", action: 'index|loginHandler|register|forgot|topPostAjax|query' ,invert:"true") {
             before = {
                 println("In Filter :: "+params)
                 String user=session["userName"]

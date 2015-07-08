@@ -12,7 +12,7 @@
 
  <span style="float: right">   <g:link controller="topic" action="show" params="[topicId: rs.topic.id]"> ${rs.topic.name} </g:link>
  </span>
-   <br/> ${rs.description}
+   <br/> <gt:description rid="${rs.id}"></gt:description>
 <br/>
   <p align="right"><g:link controller="resource" action="viewPost" params="[resource:rs.id]">View Post</g:link>
 

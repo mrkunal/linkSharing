@@ -16,7 +16,11 @@
             var sort=value
             <g:remoteFunction controller="login" action="topPostAjax" update="one" params='{sort:sort}'/>
         }
+        var forgotPassword=function()
+        {
+            window.open("${g.createLink(controller: 'login', action: 'forgot')}",'', 'width=400,height=300');
 
+        }
    </script>
 
 </head>
@@ -90,7 +94,8 @@
                                     <td>Password:</td><td><g:field type="password" name="password"/></td>
                                 </tr>
                                 <tr>
-                                <td><g:link action="forgot"> Forgot Password</g:link><td><g:submitButton name="submit"/></td>
+                                <td><a href="" onclick="forgotPassword();return false">
+                                    Forgot Password</a><td><g:submitButton name="submit"/></td>
 
                                 </tr>
 

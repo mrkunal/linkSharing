@@ -3,6 +3,19 @@ package linksharing
 class LoginController {
     def mailService
      SupportService supportService
+
+    def beforeInterceptor=
+    {
+
+        User user=User.findByUserName(session['userName'])
+
+        if(user!=null)
+        {
+            redirect(controller: 'home',action: 'dashboard')
+            return false
+        }
+    }
+
     def index() {
 
         //Only Public Topics Resource is to be visible in recent shares
@@ -82,8 +95,11 @@ def topPostAjax()
                 }
 
                     user.save(failOnError: true)
-                    flash.message = "User Created Successfully"
-                    redirect(controller: "login", action: "index")
+                session["userName"] = user.userName;
+                //session["user_id"] = user.id;
+                session["admin"]=user.admin
+                flash.message="Successfully Registered"
+                redirect(controller: "home", action: "dashboard")
                 }
             }
 
@@ -112,7 +128,7 @@ def forgot()
     User user=User.findByEmail(email)
     if(user==null)
     {   flash.message="Email ID Doesnt exist"
-        redirect(action: "forgot")}
+        redirect(controller:'login', action: "forgot")}
 
     else
     {
@@ -133,7 +149,7 @@ def password=new String()
         user.password=password.encodeAsMD5()
         user.save(flush: true)
         flash.message="password Sent"
-        redirect(action:"forgot")}
+        redirect(controller:'login', action:"forgot")}
      }
 
 }

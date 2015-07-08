@@ -45,8 +45,8 @@
     <g:select name="topic" from="${topics}" optionKey="id" optionValue="name"
     />
     <button type="submit" class="btn btn-default">Share</button>
-    <button class="btn btn-default" onclick="exit()">Cancel</button>
-</form>
+
+</form><button class="btn btn-default" onclick="exit()">Cancel</button>
      </div>
 </div>
 

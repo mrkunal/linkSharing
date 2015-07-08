@@ -59,6 +59,16 @@ class CustTagLib {
             out<<sb                             //    deployment time
             //out<< resource_time             //      compile time
     }
+
+    def ExactTime={ attrs->
+        StringBuilder sb=new StringBuilder()
+        Date resource_time=attrs.time
+
+        def day=resource_time.toLocaleString()
+
+        out<<day                             //    deployment time
+        //out<< resource_time             //      compile time
+    }
     def subscriptionCount={ attrs,body->
         def id = attrs.uid
         def userName =session['userName']
@@ -123,6 +133,18 @@ class CustTagLib {
         out<<postTotal
 
     }
+    def description={
+        attrs,body->
+            Resource resource=Resource.findById(attrs.rid)
+
+              int length = resource.description.length()
+              if (length > 150) {
+                  length = 150
+              }
+
+              out << resource.description.substring(0, length)+"..."
+
+          }
     def topicCount=
     {   attrs,body->
         User user=User.findById(attrs.uid)

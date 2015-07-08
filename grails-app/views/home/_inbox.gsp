@@ -21,7 +21,8 @@
                  &emsp; <span style="padding-left:68px;"></span>
                 <g:link controller="topic" action="show" params="[topicId:rs.topic.id]"> ${rs.topic.name}</g:link>
 
-                <br/> ${rs.description}
+                <br/> <gt:description rid="${rs.id}"></gt:description>
+
                 <br/>
 
             &ensp;<span style="padding-left:68px;"></span>

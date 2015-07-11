@@ -7,21 +7,21 @@
 
 </script>
 
-<div class="panel-body" style="max-height:600px;overflow: scroll" align="left">
+<div class="panel-body" style="float: left"  >
         <g:each in="${resources}" var="rs">
 
             <div class="panel-body">
 
-                    <gt:pic uid="${rs.createdBy.id}"/>
+                    <ApplicationTag:pic uid="${rs.createdBy.id}"/>
 
 <b><i>${rs.createdBy.firstName} @ ${rs.createdBy.userName}</i></b>
-                <i> <gt:time time="${rs.lastUpdated}"/></i>
+                <i> <ApplicationTag:time time="${rs.lastUpdated}"/></i>
 
 
                  &emsp; <span style="padding-left:68px;"></span>
                 <g:link controller="topic" action="show" params="[topicId:rs.topic.id]"> ${rs.topic.name}</g:link>
 
-                <br/> <gt:description rid="${rs.id}"></gt:description>
+                <br/> <ApplicationTag:description rid="${rs.id}"/>
 
                 <br/>
 

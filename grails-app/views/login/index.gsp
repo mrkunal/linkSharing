@@ -30,11 +30,6 @@
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
 
-    %{--<table>--}%
-
-        %{--<tr>--}%
-            %{--<td>--}%
-                %{-- Recent Share Code--}%
     <div style="width: 40%;float: left">
     <div class="panel panel-default" style="width: 550px">
                     <div class="panel-heading" align="left">
@@ -53,6 +48,7 @@
                 <div class="panel panel-default" style="width: 550px">
                     <div class="panel-heading" >
                         <h3 class="panel-title">Top Posts
+
                             <select id="sort" style="float: right" name="sort" onchange="findtoppost(value)">
                                 <option value="today">Today</option>
                                 <option value="week">1 Week</option>
@@ -60,15 +56,14 @@
                                 <option value="year">1 Year</option>
                             </select>
 
+
                         </h3>
                     </div>
                    <div id="one"> <g:render id="one" template="recentShare" model="[resources: toppost]"/>
                    </div>
                 </div>
     </div>
-                %{--toppostt--}%
-            %{--</td>--}%
-            %{--<td>--}%
+
 
 
 %{--######################################################################################--}%
@@ -160,11 +155,6 @@
                 </div>
 </div>
                 %{-------------------------------------}%
-            %{--</td>--}%
-        %{--</tr>--}%
-
-    %{--</table>--}%
-
 
     <br/>
 

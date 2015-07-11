@@ -3,7 +3,7 @@
 
 <g:each in="${toppost}" var="rs">
 
-    <gt:pic uid="${rs.createdBy.id}"/>
+    <ApplicationTag:pic uid="${rs.createdBy.id}"/>
 
     <i>${rs.createdBy.firstName} @${rs.createdBy.userName}</i>
     <g:link controller="topic" action="show" params="[topicId: rs.topic.id]"> ${rs.topic.name} </g:link>

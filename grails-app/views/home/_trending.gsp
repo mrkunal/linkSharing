@@ -1,77 +1,97 @@
 <%@ page import="linksharing.*" %>
 
 <script type="text/javascript">
-    var sendInvitation=function(val)
-    {
-        window.open("${g.createLink(controller: 'home', action: 'invitation',params: [topicId:val])}",'', 'width=400,height=300');
 
-    }
-    var subscribeAndUnsubscribe=function(val){
-        alert ("Subscribe"+val)
-        var s="sub"+val
+    var topicEdit = function (val) {
+        var elem = $('#topicName' + val).hide()
+        var elem1 = $('#topicEdit' + val).show()
 
-        <g:remoteFunction controller="subscription" action="subscribeAndUnsubscribe" update="s" params='{topicId:val}'/>
- //      $('#sub'+val).innerHTML="subscribe"
-//
-        %{--$('#div'+val).innerHTML=<g:render template="trendingsub" model="[topic:Topic.first(),user: user]"/>--}%
-        %{--$('#div'+val).innerHTML= <g:render template="trendingsub" model="[topic:Topic.first(),user: user]"/>--}%
+        return false;
 
     }
 
-    var del=function(val)
-    {
+    var changeName = function (val) {
+        var elem = $('#input' + val).val()
+
+        $.ajax({
+            url: "${createLink(controller:"topic" ,action:"changeName" )}",
+            type: "GET",
+            data: {topicId: val,topicName:elem},
+            success: function () {
+                $('#topicEdit' + val).hide()
+                $('#topicName'+val).text(elem)
+                $('#topicName' + val).show()
+
+            },
+            error: function (request, status, error) {
+                alert(error)
+
+            }
+        });
+
+        return false
+
+    }
+    var editCancel = function (val) {
+        var elem = $('#topicName' + val).show()
+        var elem1 = $('#topicEdit' + val).hide()
+        return false;
+
+    }
+
+
+    var del = function (val) {
         <g:remoteFunction controller="topic" action="delete" params='{topicId:val}'/>
 
-        $('#div'+val).empty()
+        $('div[name=' + val + ']').empty()
 
         $('<span style="color: green;float: right;font-size: medium">Topic Deleted Successfully</span>')
                 .insertBefore('#msg')
                 .delay(3000)
-                .fadeOut(function() {
+                .fadeOut(function () {
                     $(this).remove();
                 });
 
     }
 
-    var seriousnessChange=function(val,tid)
-    {
+    var seriousnessChange = function (val, tid) {
         <g:remoteFunction controller="subscription" action="seriousnessChange" params='{topicId:tid,seriousness:val}'/>
 
-        $('#div'+val).empty()
-
+        $('[name=tid]').empty()
         $('<span style="color: green;float: right;font-size: medium">Seriousness Changed.</span>')
                 .insertBefore('#msg')
                 .delay(3000)
-                .fadeOut(function() {
+                .fadeOut(function () {
                     $(this).remove();
                 });
     }
 
-    var visibilityChange=function(val,tid)
-    {
+    var visibilityChange = function (val, tid) {
         <g:remoteFunction controller="subscription" action="visibilityChange" params='{topicId:tid,visibility:val}'/>
-
-        $('#div'+val).empty()
+        $('[name=tid]').empty()
 
         $('<span style="color: green;float: right;font-size: medium">Visibility Changed.</span>')
                 .insertBefore('#msg')
                 .delay(3000)
-                .fadeOut(function() {
+                .fadeOut(function () {
                     $(this).remove();
                 });
 
     }
 
 
-
 </script>
 
-<div class="panel-body" style="max-height:300px;width:500px;overflow: scroll">
-        <g:each in="${trendingTopics}" var="topic">
-            <div class="panel-body" id="div${topic.id}">
-            <g:render template="/home/trendingsub" model="[topic:topic,user:user]"/>
-                <hr/>
-            </div>
-        </g:each>
+<div class="panel-body" style="width:500px">
+    <g:each in="${trendingTopics}" var="topic">
 
-    </div>
+        <div class="panel-body" name="${topic.id}">
+
+            <g:render template="/home/trendingsub" model="[topic: topic, user: user]"/>
+
+        </div>
+        <hr/>
+
+    </g:each>
+
+</div>

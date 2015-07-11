@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<div class="container" style="width: 100%;margin-top:4%">
+<div class="container" style="width: 100%">
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
@@ -44,7 +44,7 @@
                     <input style="float: right" type="text" onchange="searchInTopic(value)"  name="searchString">
                 </h3>
             </div>
-            <div id="resourceList">
+            <div id="resourceList" class="panel-body">
                 <g:render template="/home/inbox" model="[resources: resources]"/>
             </div>
         </div>

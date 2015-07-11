@@ -18,6 +18,6 @@
 </g:if>
 <g:render template="recentShare" model="[resources:resources]"/>
 
-<gt:pic uid="3"></gt:pic>
+<ApplicationTag:pic uid="3"/>
 </body>
 </html>

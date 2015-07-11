@@ -148,6 +148,13 @@ def create()
 
        }
    }
+    def changeName()
+    {
+        Topic topic=Topic.findById(params['topicId'])
+        topic.name=params['topicName']
+        topic.save(failOnError: true,flush: true)
+         render true
+    }
 
 
 

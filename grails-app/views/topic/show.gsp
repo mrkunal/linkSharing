@@ -29,7 +29,7 @@
             <div class="panel-heading" align="left">
                 <h3 class="panel-title">Topic :${topic.name}</h3>
             </div>
-            <div style="overflow: hidden">
+            <div>
                 <g:render template="/home/trending" model="[user: user,trendingTopics:topic]"/>
 
             </div>
@@ -44,7 +44,7 @@
             <div class="panel-heading" align="left">
                 <h3 class="panel-title">Users : ${topic.name}</h3>
             </div>
-               <div style="max-height: 200px;overflow:scroll">
+               <div>
                <g:each in="${users}" var="us">
                    <g:render template="/home/info" model="[user: us]"/>
 
@@ -61,7 +61,7 @@
                        <input style="float: right" type="text" onchange="searchInTopic(value)"  name="searchString">
                      </h3>
                 </div>
-                <div id="resourceList">
+                <div id="resourceList" class="panel-body">
                 <g:render template="/home/inbox" model="[resources: resources]"/>
                 </div>
             </div>

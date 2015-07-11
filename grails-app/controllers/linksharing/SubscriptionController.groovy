@@ -5,7 +5,7 @@ class SubscriptionController {
     User reqUser
     Topic topic
 
-    def subscribeAndUnsubscribe()
+  /*  def subscribeAndUnsubscribe()
     {
         Topic topic=Topic.findById(params['topicId'])
         User user=User.findByUserName(session['userName'])
@@ -20,8 +20,28 @@ class SubscriptionController {
         { subscription.delete(flush: true)
             render "Subscribe"
         }
-    }
+    }*/
 
+
+      def subscribeAndUnsubscribe()
+      {
+          Topic topic=Topic.findById(params['topicId'])
+          User user=User.findByUserName(session['userName'])
+          Subscription subscription=Subscription.findByUserAndTopic(user,topic)
+
+          if(subscription==null) {
+              subscription = new Subscription(user: user, topic: topic, seriousness: Seriousness.SERIOUS).
+                      save(failOnError: true, flush: true)
+
+          }
+          else if(subscription.topic.createdBy!=user)
+          { subscription.delete(flush: true)
+
+          }
+
+    render(template: '/home/trendingsub',model: [user:user,topic: topic])
+
+   }
    def seriousnessChange()
    {
        Topic topic=Topic.findById(params['topicId'])
@@ -113,5 +133,6 @@ def permission() {
 
 
     }
+
 
 }

@@ -40,7 +40,7 @@ MailService mailService
      def invitation()
     {
         def topics=Subscription.findAllByUser(user)
-
+       // render params
         [subscribed: topics.topic,topic:params['topicId']]
 
     }
@@ -65,7 +65,7 @@ MailService mailService
         }
         catch(Exception e){
              flash.message="Not a Valid Email Id Set..!please Check ie. 'emailid@domain.com;emailid2@domain.com'"
-             redirect (controller: 'home',action:'invitation' )
+             forward (controller: 'home',action:'invitation' )
         }
 
         if(valid) {
@@ -92,7 +92,7 @@ MailService mailService
 
             }
             flash.message = "Invitations Successfully Sends."
-            redirect(controller: 'home',action: 'invitation')
+            forward(controller: 'home',action: 'invitation')
           }
     }
 
@@ -100,7 +100,7 @@ MailService mailService
     {
         session['userName']=null
         session['admin']=null
-        flash.message="Successfully Log Out"
+
         redirect(controller: "login",action: "index")
     }
 

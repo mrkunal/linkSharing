@@ -63,8 +63,8 @@ def topPostAjax()
             session["userName"] = user.userName;
             //session["user_id"] = user.id;
             session["admin"]=user.admin
-            flash.message="Successfully Login"
-            redirect(controller: "home", action: "dashboard")
+
+            forward(controller: "home", action: "dashboard")
         } else {
             flash.message="UserId or Password Mismatch"
             redirect(controller: "login", action: "index")

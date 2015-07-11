@@ -5,10 +5,10 @@
 
             <div class="panel-body">
 
-                    <gt:pic uid="${rs.createdBy.id}"/>
+                    <ApplicationTag:pic uid="${rs.createdBy.id}"/>
 
 <b><i>${rs.createdBy.firstName} @ ${rs.createdBy.userName}</i></b>
-                <i> <gt:time time="${rs.lastUpdated}"/></i>
+                <i> <ApplicationTag:time time="${rs.lastUpdated}"/></i>
 
 
                  &emsp; <span style="padding-left:68px;"></span>     <g:link> ${rs.topic.name}</g:link>

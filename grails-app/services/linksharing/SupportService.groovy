@@ -33,40 +33,9 @@ class SupportService {
          return trendingTopics
     }
 
-    protected def inbox_data(User user)
-    {
-
-        List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
-            projections { property("topic") }
-            eq('user', user)
-        }
-        List<Resource> AllResource=Resource.createCriteria().list() {   // Second Searching Resources Of the Topics
-
-            inList ('topic', top )
-            order("lastUpdated","desc")
-        }
-
-        List<Resource> readResource=ReadingItem.createCriteria().list {
-            projections{
-                property('resource')
-            }
-            eq('user',user)
-            inList('resource',AllResource)
-
-        }
-        Set rs=AllResource.toSet()
-        Set rr=readResource.toSet()
-
-        List resource=(rs-rr).toList()
-
-        resource.sort{it.lastUpdated}
-        resource.reverse(true)
-        return resource
-    }
 
     protected def inbox_search(User user,String description)
     {
-
         List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
             projections { property("topic") }
             eq('user', user)
@@ -94,7 +63,6 @@ class SupportService {
         resource.sort{it.lastUpdated}
         resource.reverse(true)
         return resource
-
     }
 
     def topPost(Date date)

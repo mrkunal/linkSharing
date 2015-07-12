@@ -24,11 +24,10 @@
 </form>
     </div>
 
-    <div class="panel-body">
+    <div class="panel-body" id="userList">
 
         <g:render template="userList" model="[user:users]"/>
     </div>
-
 
 </div>
 

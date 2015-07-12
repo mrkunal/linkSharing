@@ -7,24 +7,25 @@ class DocumentResourceController {
     {
          String userName= "${session["userName"]}"
          User user=User.findByUserName(userName)
-        List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
+         List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
             projections { property("topic") }
             eq('user', user)
         }
-        [topics:top]
+        Resource resource=Resource.findById(params['resourceId'])
+            [resource:resource,topics:top]
 
     }
     def save()
     {
         String userName= "${session["userName"]}"
         User user=User.findByUserName(userName)
-
+        DocumentResource resourceAlready =DocumentResource.findById(params['resourceId'])
         def file = request.getFile('file')
         if(file.empty) {
             flash.message = "Some Error Occured"
             redirect(controller: "documentResource",action: "create")
         }
-        else {
+        else if(resourceAlready==null) {
             DocumentResource documentResource=new DocumentResource()
             documentResource.topic=Topic.findById(params['topic'])
             String s=file.originalFilename+new Date()
@@ -47,6 +48,10 @@ class DocumentResourceController {
             new ReadingItem(resource:resource, isRead: true, user: user).save()
             flash.message="Document Resource Shared Successfully"
             redirect(controller: "documentResource",action: "create")
+        }
+        else if(resourceAlready)
+        {
+
         }
 
     }

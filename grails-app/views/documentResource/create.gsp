@@ -30,7 +30,7 @@
             <h3 class="panel-title">Share Document</h3>
         </div>
         <div class="panel-body"  >
-            <g:uploadForm action="save">
+            <g:uploadForm controller="documentResource" action="save">
                 <div class="form-group">
                     <label for="file">Document</label>
                     <input type="file" id="file" name="file">
@@ -39,12 +39,18 @@
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea class="form-control" rows="5" id="description" name="description"
-                              placeholder="Description" ></textarea>
+                              placeholder="Description"><g:if test="${resource}"> ${resource.description}</g:if>
+                    </textarea>
                 </div>
-                <label>Topic</label>
 
-                <g:select name="topic" from="${topics}" optionKey="id" optionValue="name"
+                <label>Topic</label>
+                <g:if test="${resource}">
+                    <input style="display:none" value="${resource.id}" name="resourceId">
+                </g:if>
+                <g:else>
+                    <g:select name="topic" from="${topics}" optionKey="id" optionValue="name"
                 />
+                </g:else>
                 <button type="submit" class="btn btn-default">Share</button>
 
             </g:uploadForm><button class="btn btn-default" onclick="exit()">Cancel</button>

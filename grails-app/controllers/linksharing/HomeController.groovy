@@ -23,7 +23,35 @@ MailService mailService
     def dashboard()
   {   //String userName= "${session["userName"]}"
       //user=User.findByUserName(userName)
-      def inbox_data=supportService.inbox_data(user)
+      params.max = params.max ?: 5
+      List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
+          projections { property("topic") }
+          eq('user', user)
+      }
+
+       List<Resource> readResource=ReadingItem.createCriteria().list {
+          projections{
+              property('resource')
+          }
+          eq('user',user)
+      }
+      List<Resource> inbox=Resource.createCriteria().list(params) {   // Second Searching Resources Of the Topics
+
+          inList ('topic', top )
+          not { inList('id',readResource.id)  }
+          order("lastUpdated","desc")
+
+      }
+
+      int  inboxCount=Resource.createCriteria().count() {   // Second Searching Resources Of the Topics
+
+          projections{ rowCount()}
+          inList ('topic', top )
+          not { inList('id',readResource.id)  }
+
+
+      }
+
       def trendingTopics=supportService.trending_topic()
       List<Topic> subscribedTopic=Subscription.createCriteria().list ([max:5]){
 
@@ -34,10 +62,44 @@ MailService mailService
       }
 
 
-      [resources:inbox_data,
-       resourcesTotal:inbox_data.size(),user:user,
+      [resources:inbox,
+       resourcesTotal:inboxCount,user:user,
        trendingTopics:trendingTopics,user:user,subscribedTopic:subscribedTopic]
   }
+    def inboxFilter()
+    {
+        params.max = params.max ?: 5
+        List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
+            projections { property("topic") }
+            eq('user', user)
+        }
+
+        List<Resource> readResource=ReadingItem.createCriteria().list {
+            projections{
+                property('resource')
+            }
+            eq('user',user)
+        }
+        List<Resource> inbox=Resource.createCriteria().list(params) {   // Second Searching Resources Of the Topics
+
+            inList ('topic', top)
+            not { inList('id',readResource.id)  }
+            order("lastUpdated","desc")
+
+        }
+
+        int  inboxCount=Resource.createCriteria().count() {   // Second Searching Resources Of the Topics
+
+            projections{ rowCount()}
+            inList ('topic', top )
+            not { inList('id',readResource.id)  }
+
+
+        }
+        render(template: 'inbox',model:[resources:inbox,
+                                        resourcesTotal:inboxCount])
+
+    }
 
    def search()
    {    User user= User.findByUserName(session['userName'])

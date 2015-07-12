@@ -9,7 +9,7 @@ class UrlMappings {
        "/"(controller:"login",view:"index",action:"index")
 
        // "/"(view:"/index")
-      //  "500"(view:'/error')
+       //"500"(view:'/error')
 	    "500"(view: '/Exception')
         "404"(view: '/NotFound')
     }

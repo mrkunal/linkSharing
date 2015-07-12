@@ -103,7 +103,7 @@
                             <li><g:link controller="user" action="list">Users</g:link></li>
                             <li><g:link controller="topic" action="list"
                                         params="[uid: null, operation: null]">Topics</g:link></li>
-                            <li><g:link>Posts</g:link></li>
+                            <li><g:link controller="search" action="find" params="[search:null]">Posts</g:link></li>
                             <li role="separator" class="divider"></li>
 
                         </g:if>

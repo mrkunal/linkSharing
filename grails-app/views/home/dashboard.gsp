@@ -65,12 +65,16 @@
                     <div class="panel panel-default" style="width: 600px;overflow: hidden">
                         <div class="panel-heading" align="left">
                             <h1 class="panel-title">Inbox &nbsp;<span class="badge">${resourcesTotal}</span>
-                                <input type="text" class="form-inline" placeholder="Search"
+                                <input type="text" class="form-inline"
                                        style="float: right;width: 200px" onchange="searchInInbox(value)"></h1>
                         </div>
 
                         <div class="panel-body" id="inbox">
                         <g:render template="inbox" model="[resources: resources]"/>
+                        </div>
+                        <div class="panel-footer">
+                            <util:remotePaginate controller="home" action="inboxFilter" total="${resourcesTotal}"
+                                                 update="inbox" max="5"/>
                         </div>
 
                     </div>

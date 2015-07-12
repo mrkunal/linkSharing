@@ -4,10 +4,13 @@ import grails.converters.JSON
 
 class TopicController {
 
+def static mainTopicsList
 def create()
 {
 
 }
+
+
 
     def save()
     {
@@ -71,6 +74,12 @@ def create()
 
     }
 
+    def find()
+    {
+        User user=User.findByUserName(session['userName'])
+        render ( template:'/home/trending', model:[user: user,trendingTopics:mainTopicsList])
+    }
+
     def list()
     {   User user=User.findByUserName(session['userName'])
         User viewUser=User.findById(params['uid'])
@@ -132,8 +141,8 @@ def create()
 
         }
 
-            [topics:topics,resources: resources]
-       // render topics
+ mainTopicsList=topics
+            [topics:topics,resources: resources,user:user]
 
     }
    def delete()

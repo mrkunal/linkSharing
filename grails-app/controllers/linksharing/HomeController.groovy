@@ -34,8 +34,17 @@ MailService mailService
       }
 
 
-      [resources:inbox_data,user:user,trendingTopics:trendingTopics,user:user,subscribedTopic:subscribedTopic]
+      [resources:inbox_data,
+       resourcesTotal:inbox_data.size(),user:user,
+       trendingTopics:trendingTopics,user:user,subscribedTopic:subscribedTopic]
   }
+
+   def search()
+   {    User user= User.findByUserName(session['userName'])
+
+        def inbox_data=supportService.inbox_search(user,params['search'])
+       render(template: 'inbox' ,model:[resources: inbox_data])
+   }
 
      def invitation()
     {

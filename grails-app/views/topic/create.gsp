@@ -70,7 +70,7 @@
                 <table style="width: 100%" align="center"><tr>
                     <td>Topic Name :</td>
                     <td>
-                <input type="text" class="form-control" placeholder="Topic Name" name="name" id="topicName">
+                <input type="text" class="form-control" placeholder="Topic Name" name="name" id="topicName" value="${params['name']}">
                     </td></tr>
                     <tr>  <td>   Visibility :</td><td>
                 <select class="form-control" name="visibility" id="visibility">

@@ -64,6 +64,39 @@ class SupportService {
         return resource
     }
 
+    protected def inbox_search(User user,String description)
+    {
+
+        List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
+            projections { property("topic") }
+            eq('user', user)
+        }
+        List<Resource> AllResource=Resource.createCriteria().list() {   // Second Searching Resources Of the Topics
+
+            inList ('topic', top )
+            ilike('description',"%"+description+"%")
+            order("lastUpdated","desc")
+        }
+
+        List<Resource> readResource=ReadingItem.createCriteria().list {
+            projections{
+                property('resource')
+            }
+            eq('user',user)
+            inList('resource',AllResource)
+
+        }
+        Set rs=AllResource.toSet()
+        Set rr=readResource.toSet()
+
+        List resource=(rs-rr).toList()
+
+        resource.sort{it.lastUpdated}
+        resource.reverse(true)
+        return resource
+
+    }
+
     def topPost(Date date)
     {         List<Topic> top =Topic.findAllByVisibility("PUBLIC")
 
@@ -85,25 +118,10 @@ class SupportService {
     return topposts
     }
 
-//    def subscriptionTotal(User user)
-//    {  int subscription_total
-//        if(session['userName']==user.userName||session['admin']==true) {
-//            subscription_total = Subscription.countByUser(user)
-//            return subscription_total
-//        }
-//        else
-//        {
-//        subscription_total=Subscription.createCriteria().count(){
-//        projections{ rowCount()}
-//            'topic' {
-//                eq('visibility',Visibility.PUBLIC)
-//
-//            }
-//        }
-//            return subscription_total
-//        }
-//
-//    }
 
+protected def topic_list()
+{
+
+}
 
 }

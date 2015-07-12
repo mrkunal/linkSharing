@@ -64,7 +64,7 @@ def topPostAjax()
             //session["user_id"] = user.id;
             session["admin"]=user.admin
 
-            forward(controller: "home", action: "dashboard")
+            redirect(controller: "home", action: "dashboard")
         } else {
             flash.message="UserId or Password Mismatch"
             redirect(controller: "login", action: "index")

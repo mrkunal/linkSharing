@@ -38,7 +38,8 @@
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" rows="5" id="description" name="description" placeholder="Description"></textarea>
+                    <textarea class="form-control" rows="5" id="description" name="description"
+                              placeholder="Description" ></textarea>
                 </div>
                 <label>Topic</label>
 

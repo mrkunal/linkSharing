@@ -97,15 +97,16 @@
             <p style="float: right">
                 <% if (access) { %>
                 <g:link controller="resource" action="delete" params="[resource: resource.id]">Delete</g:link>&ensp;
-                <g:link controller="resource" action="edit" params="[resource: resource.id]">Edit</g:link>&ensp;
 
                 <% }
 
 
 
                 if (resource.instanceOf(LinkResource)) { %>
+                <g:link controller="linkResource" action="create" params="[resource: resource.id]">Edit</g:link>&ensp;
                 <a href="${resource.url}" target="_blank">View Full Site</a>&ensp;
                 <% } else { %>
+                <g:link controller="documentResource" action="create" params="[resource: resource.id]">Edit</g:link>&ensp;
                 <g:link controller="documentResource" action="document_download"
                         params="[id: resource.id]">Download</g:link>&ensp;
                 <% } %>

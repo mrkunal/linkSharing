@@ -7,7 +7,6 @@ class DocumentResourceController {
     {
          String userName= "${session["userName"]}"
          User user=User.findByUserName(userName)
-
         List<Topic> top = Subscription.createCriteria().list() {   // First Extracting Subscribed Topics of User
             projections { property("topic") }
             eq('user', user)

@@ -10,13 +10,10 @@
 <head>
     <meta name="layout" content="dash_head">
     <title>LinkSharing</title>
-
-
-
 </head>
 
 <body>
-<div style="width: 100%;margin-top: 5%"  >
+<div style="width: 100%" >
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>
@@ -24,6 +21,20 @@
 
 <div style="width:40%;float: left" >
     <g:render template="/home/info" model="[user:user,topic_total:topic_total,subscription_total:subscription_total]"/>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Topics
+                <input type="text" class="form-inline" placeholder="search" style="float: right;width: 150px" name="topicName"></h3>
+        </div>
+        <div class="panel-body">
+            <g:render template="/home/trending" model="[user: user, trendingTopics: topics]"/>
+        </div>
+
+    <div class="panel-footer">Panel footer</div>
+    </div>
+
+
 </div>
 
     <div style="width:50%;float:right;margin-right: 10%">

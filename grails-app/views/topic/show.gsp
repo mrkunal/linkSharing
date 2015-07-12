@@ -14,13 +14,13 @@
     var searchInTopic=function(search){
         <g:remoteFunction controller="topic" action="search" update="resourceList"
         params='{searchString:search,topicId:${topic.id}}'/>
-       // alert(eb)
+
     }
 </script>
 </head>
 <body>
 
-<div class="container" style="width: 100%;margin-top:4%">
+<div class="container" style="width: 100%">
     <g:if test="${flash.message}">
         <div class="message" role="status" style="color:red;"align="right">${flash.message}</div>
     </g:if>

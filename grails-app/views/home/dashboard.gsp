@@ -10,7 +10,23 @@
 <head>
     <meta name="layout" content="dash_head">
     <title>LinkSharing</title>
+    <script type="text/javascript">
 
+        var searchInInbox=function(value)
+        {
+
+            $.ajax({
+                    url: "${createLink(controller:"home" ,action:"search" )}",
+                    type: "GET",
+                    data: {search: value},
+                    success:function(data,textStatus){jQuery('#inbox').html(data);},
+                    error:function(XMLHttpRequest,textStatus,errorThrown){}});
+
+            return false
+        }
+
+
+    </script>
 </head>
 
 <body>
@@ -38,6 +54,7 @@
                     <h3 class="panel-title">Trending Topics
                     </h3></div>
                 <g:render template="trending" model="[user: user, trendingTopics: trendingTopics]"/>
+
             </div>
 
         </div>
@@ -47,12 +64,15 @@
                 <div>
                     <div class="panel panel-default" style="width: 600px;overflow: hidden">
                         <div class="panel-heading" align="left">
-                            <h3 class="panel-title">Inbox &nbsp;<span class="badge">${resources.size()}</span>
-                                <input type="text" class="form-control" placeholder="Search"
-                                       style="float: right;width: 100px"></h3>
+                            <h1 class="panel-title">Inbox &nbsp;<span class="badge">${resourcesTotal}</span>
+                                <input type="text" class="form-inline" placeholder="Search"
+                                       style="float: right;width: 200px" onchange="searchInInbox(value)"></h1>
                         </div>
 
+                        <div class="panel-body" id="inbox">
                         <g:render template="inbox" model="[resources: resources]"/>
+                        </div>
+
                     </div>
                 </div>
         </div>

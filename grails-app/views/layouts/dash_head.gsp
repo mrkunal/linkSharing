@@ -66,7 +66,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <g:form class="navbar-form navbar-left" role="search" action="find" controller="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search" name="search">
+                        <input type="text" class="form-control" placeholder="Search" name="search" value="${params['search']}">
                     </div>
                     <button type="submit" class="btn btn-default">Search</button>
                 </g:form>

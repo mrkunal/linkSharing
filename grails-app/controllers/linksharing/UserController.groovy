@@ -9,9 +9,9 @@ def list()
         redirect(controller: 'home',action: 'dashboard')
     return false
     }
-    List<User> user
+    List<User> users
     if(params['sort']==null||params['search']==null)
-    {user=User.createCriteria().list() {
+    {users=User.createCriteria().list() {
 
     eq('admin',false)
     }
@@ -24,7 +24,7 @@ def list()
 
 
         if (sort == 'active') {
-            user = User.createCriteria().list() {
+            users = User.createCriteria().list() {
                 or {
                     ilike('firstName', search)
                     ilike('lastName', search)
@@ -37,7 +37,7 @@ def list()
 
             }
         } else if (sort == 'inactive') {
-            user = User.createCriteria().list {
+            users = User.createCriteria().list {
                 or {
                     ilike('firstName', search)
                     ilike('lastName', search)
@@ -51,7 +51,7 @@ def list()
 
             }
         } else {
-            user = User.createCriteria().list() {
+            users = User.createCriteria().list() {
                 or {
                     ilike('firstName', search)
                     ilike('lastName', search)
@@ -65,7 +65,7 @@ def list()
 
 
     }
-    [user:user]
+    [users:users]
 
 
 }
@@ -97,7 +97,8 @@ def list()
 
         int subscription_total = Subscription.countByUser(user)
         int topic_total = Topic.countByCreatedBy(user)
-        [user:user,topic_total:topic_total,subscription_total:subscription_total]
+        List<Topic> topics=Topic.findAllByCreatedBy(user)
+        [user:user,topic_total:topic_total,subscription_total:subscription_total,topics:topics]
 
     }
 
@@ -160,6 +161,8 @@ def list()
     {
         User showUser=User.findById(params['uid'])
         User user=User.findByUserName(session['userName'])
+        List<Topic> topics=Topic.findAllByCreatedByAndVisibility(showUser,Visibility.PUBLIC)
+
         List<Resource> posts
 
       if(user.admin==true||user==showUser) {
@@ -184,12 +187,10 @@ def list()
                   }
 
       }
-        [showUser:showUser,posts:posts]
+        [showUser:showUser,posts:posts,user:user,topics:topics]
 
     }
 
-    def showTime() {
-        render "The time is ${new Date()}"
-    }
+
 
 }

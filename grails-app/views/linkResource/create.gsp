@@ -34,17 +34,21 @@
 <form action="save">
     <div class="form-group">
         <label for="url">Link</label>
-        <input type="text" class="form-control" placeholder="URL" id="url" name="url">
+        <input type="text" class="form-control" placeholder="URL" id="url" name="url" value="${resource?.url}">
     </div>
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea class="form-control" rows="5" id="description" name="description" placeholder="Description"></textarea>
+        <textarea class="form-control" rows="5" id="description" name="description" placeholder="Description">${resource?.description}
+        </textarea>
     </div>
+    <g:if test="${resource}">
+        <input type="text" value="${resource.id}" style="display:none" name="resourceId">
+    </g:if>
+    <g:else>
     <label>Topic</label>
-
-    <g:select name="topic" from="${topics}" optionKey="id" optionValue="name"
-    />
-    <button type="submit" class="btn btn-default">Share</button>
+    <g:select name="topic" from="${topics}" optionKey="id" optionValue="name" />
+    </g:else>
+        <button type="submit" class="btn btn-default">Share</button>
 
 </form><button class="btn btn-default" onclick="exit()">Cancel</button>
      </div>

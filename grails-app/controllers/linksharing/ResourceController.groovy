@@ -48,7 +48,6 @@ eq('resource',resource)
 
 if(ratings==null)
 {ratings=0 }
-     println ratings
          [resource:resource,access:access,usersRate:usersRate,
           trendingTopics:supportService.trending_topic(),user:user,
           ratings:ratings,userRating:userRating]

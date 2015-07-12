@@ -16,12 +16,11 @@ class DocumentResourceController {
 
     }
     def save()
-    {
-        String userName= "${session["userName"]}"
+    {   String userName= "${session["userName"]}"
         User user=User.findByUserName(userName)
         DocumentResource resourceAlready =DocumentResource.findById(params['resourceId'])
         def file = request.getFile('file')
-        if(file.empty) {
+        if(file.empty && resourceAlready==null) {
             flash.message = "Some Error Occured"
             redirect(controller: "documentResource",action: "create")
         }
@@ -49,8 +48,31 @@ class DocumentResourceController {
             flash.message="Document Resource Shared Successfully"
             redirect(controller: "documentResource",action: "create")
         }
-        else if(resourceAlready)
+        else if(resourceAlready!=null)
         {
+
+            if(!file.empty)
+            {
+                String prevpath=resourceAlready.filePath
+                new File(prevpath).delete()
+
+                resourceAlready.fileName=file.originalFilename
+                String path='web-app/document/'+"${resourceAlready.topic.id}/"
+                String s=file.originalFilename+new Date()
+
+                File dir=new File(path)
+                if( !dir.exists() ) {
+
+                    dir.mkdirs()
+                }
+                resourceAlready.filePath = path + s
+                file.transferTo(new File(resourceAlready.filePath))
+
+            }
+            resourceAlready.description=params['description']
+            resourceAlready.save(failOnError: true,flush: true)
+            flash.message="Changes Successfully Made."
+            redirect(controller: 'documentResource',action: 'create')
 
         }
 

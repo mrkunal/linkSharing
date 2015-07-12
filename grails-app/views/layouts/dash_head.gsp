@@ -24,7 +24,7 @@
 
         }
         var createDocumentResource = function () {
-            window.open("${g.createLink(controller: 'documentResource', action: 'create')}", '', 'width=500,height=400');
+            window.open("${g.createLink(controller: 'documentResource', action: 'create')}", '', 'width=500,height=450');
 
         }
 

@@ -49,6 +49,16 @@
 
 
         })
+        var editDocumentResource = function (val) {
+            window.open("${g.createLink(controller: 'documentResource', action: 'create')}?resourceId="+val+"", '', 'width=500,height=450');
+
+        }
+
+        var editLinkResource = function (val) {
+            window.open("${g.createLink(controller: 'linkResource', action: 'create')}?resourceId="+val+"", '', 'width=500,height=450');
+
+        }
+
 
     </script>
 </head>
@@ -103,10 +113,11 @@
 
 
                 if (resource.instanceOf(LinkResource)) { %>
-                <g:link controller="linkResource" action="create" params="[resourceId: resource.id]">Edit</g:link>&ensp;
+                <a href="" onclick="editLinkResource(${resource.id});return false">Edit</a>&ensp;
+
                 <a href="${resource.url}" target="_blank">View Full Site</a>&ensp;
                 <% } else { %>
-                <g:link controller="documentResource" action="create" params="[resourceId: resource.id]">Edit</g:link>&ensp;
+                <a href="" onclick="editDocumentResource(${resource.id});return false">Edit</a>&ensp;
 
                 <g:link controller="documentResource" action="document_download"
                         params="[id: resource.id]">Download</g:link>&ensp;

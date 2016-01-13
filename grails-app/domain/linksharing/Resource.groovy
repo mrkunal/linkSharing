@@ -15,7 +15,7 @@ class Resource {
         description type: 'text'
     }
     static constraints = {
-       description(size:1..1024)
+       description(size:1..2048)
         createdBy(nullable:false,blank:false)
     }
 }
